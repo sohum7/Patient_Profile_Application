@@ -1,4 +1,5 @@
 // Some description
+
 public abstract MedCond(){
   // To be implemented
 }
