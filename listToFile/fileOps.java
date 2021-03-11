@@ -7,63 +7,46 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 
-public class fileOps<T> {
-    private String fileName;
-    private File fileObject;
-
-    public fileOps(){  this("");  }
-
-    public fileOps(String fileName) {  this.openFile(fileName);  }
-
-    public void setAttributes(File fileObj, String fileName) {
-        this.fileObject = fileObj;
-        this.fileName = fileName;
-    }
-
-    private void setDefaultAttributes() {  this.setAttributes(null, "");  }
-    private void setDefaultAttributes(String fileName) {
-        if(!fileName.equals("")) 
-        {  this.setAttributes(new File(fileName), fileName);  }
-    }
-
-    // Basic file operations and storing of file objects
-    //      get file name
-    //      get file object
-    //      open file
-    protected String getFileName() {  return this.fileName;  }
-    protected File getFileObject() {  return this.fileObject;  }
-    protected void openFile(String fileName){  this.setDefaultAttributes(fileName);  }
+public class storeToFile{
 
     // Requirements:
     //    toString func on obj
     //    class implements Serialize
-    protected T[] getFileToObject() {
-        FileInputStream fis = new FileInputStream(new File(this.fileName));
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        List<T> list = new ArrayList<T>();
+    
+    public File getFileObject(String fileName){  if(!fileName.equals("")) { new File(fileName); } throw new Exception(); }
 
-        // Read objects
-        T objTemp = null;
+    public static class storeObject<T>{
 
+        public T[] fileToObject(File f) {
+
+
+            FileInputStream fis = new FileInputStream(new File(f));
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<T> list = new ArrayList<T>();
+    
+            // Read objects
+            Object objTemp = null;
+            while(!(objTemp = ois.readObject()).equals(null)) {  list.add((T) objTemp);  }
+            
+            ois.close();
+            fis.close();
+    
+            return list.toArray( (T[]) new Object[list.size()] );
+        }
+    
         // REVISIT THIS
-        while(!(objTemp = (T) ois.readObject()).equals(null)) {  list.add(objTemp);  }
-        
-        ois.close();
-        fis.close();
-
-        // REVISIT THIS
-        // return (T[]) list.toArray();
-        return list.toArray();
-    }
-    protected void setObjectToFIle(Object[] objList) throws IOException {
+        public void objectToFIle(T[] objList) throws IOException {
+    
         FileOutputStream fos = new FileOutputStream(new File(this.fileName));
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-        for(Object objTemp : objList) {  oos.writeObject(objTemp);  }
-
+    
+        for(T objTemp : objList) {  oos.writeObject(objTemp);  }
+    
         oos.close();
         fos.close();
+        }
     }
 }

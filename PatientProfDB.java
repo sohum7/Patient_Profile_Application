@@ -8,32 +8,35 @@ import java.util.*;
 import java.io.Serializable;
 
 
-public abstract class PatientProfDBAbstract {
+public abstract class PatientProfDBAbstract<patientClass> {
 
     // Eliminate comment below upon completion of PatientProf class
-    // 
+    //
+    private patientClass[] patientList = null;
+    private String fileName = "";
+    private storeToFile.storeObject<patientClass> fileObj = null;
 
     // PatientProfDB constructor
     public PatientProfDBAbstract() {  this("");  }
     // PatientProfDB constructor
     public PatientProfDBAbstract(String fileName){
-        this.fileObj = new fileOps(fileName);
-        this.fileName = this.fileObj.getFileName();
-        this.patientList = this.fileObj.getFileToObject(PatientProf);
+        this.fileObj = storeToFile.storeObject<patientClass>(fileName);
+        this.fileName = fileName;
+        this.patientList = this.fileObj.getFileToObject();
     }
 
-    protected final PatientProf[] getPatientProfList(){
+    protected final patientClass[] getPatientProfList(){
         return this.patientList;
 
     }
     // .....
-    public final boolean indexInPatientProfList(int index) {  return index >= 0 && index < this.profileList.length;  }
+    public final boolean indexInPatientList(int index) {  return index >= 0 && index < this.profileList.length;  }
 
     // Basic operations to be run on PatientProf[] array
     //      add a profile
     //      find and/or delete element based on matching adminID and name
     //      return an element of PatientProf[]
-    protected final int findProfIndexByIDAndName(String adminID, String name){ 
+    protected final int findPatientIndexByIDAndName(String adminID, String name){ 
         int i = 0;
         while (i < this.patientList.length()){
             if (this.patientList[i].getadminID().equals(adminID) && this.patientList[i].getFirstName().equals(name)) { return i; }
@@ -42,9 +45,9 @@ public abstract class PatientProfDBAbstract {
         return -1;
     }
     // NOTE NEEDED protected final PatientProf findProfileByIndex(int index) { if(this.inPatientProfList(index, this.patientList) { return this.patientList[index]; } return new PatientProf(); }
-    protected final void addProfile(PatientProf patient) { this.patientList.append(patient); }
+    protected final void addProfile(patientClass patient) { this.patientList.append(patient); }
     protected final boolean deleteProfileByIndex(int index) { this.patientList = ArrayUtils.remove(this.patientList, index); }
-    protected final PatientProf getProfileByIndex(int index) { return PatientProf[index]; }
+    protected final patientClass getProfileByIndex(int index) { return patientList[index]; }
 
     // To be implemented
     // Check input for these ...
@@ -58,7 +61,7 @@ public abstract class PatientProfDBAbstract {
 }
 
 // Inheriting PatientProfDBAbstract for PatientProfDB
- public class PatientProfDB extends PatientProfDBAbstract implements Serializable {
+ public class PatientProfDB extends PatientProfDBAbstract<PatientProf> implements Serializable {
     // Basic patient information variables
     //      number of patients
     //      currently working with patient index value for within PatientProf array
@@ -68,8 +71,9 @@ public abstract class PatientProfDBAbstract {
     private String fileName = "";
     private fileOps fileObj = null;
     private int currentProfileIndex = 0;
+
+    public PatientProfDB(){ this(""); }
     public PatientProfDB(String fileName){ super(fileName); }
-    public PatientProfDB(){ super(); }
 
     protected void updateNumPatient(){  this.numPatient = super.getPatientProfList().length;  }
     protected PatientProf findProfile(String adminID, String name)
