@@ -5,7 +5,7 @@
   // To be implemented
 }*/
 
-public class PatientProf{
+import java.io.Serializable; public class PatientProf implements Serializable{
     // arguments vvvvvvvvvvvv
     String adminID;
     String firstName;
