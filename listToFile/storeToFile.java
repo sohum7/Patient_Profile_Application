@@ -19,32 +19,12 @@ public class storeToFile{
     
     
     public static class storeObject{
-        public static File getFileObject(String fileName) {  if(!fileName.equals("")) { return new File(fileName); }
-        return null; }
+        public static File getFileObject(String fileName) throws IOException {  if(!fileName.equals("")) { return new File(fileName); }
+        throw new IOException(); }
 
-        /*
-        public static Object[] fileObjectToObject(File fileObj) throws IOException, ClassNotFoundException {
-            List<Object> list = new ArrayList<Object>();
-            try{
-                FileInputStream fis = new FileInputStream(fileObj);
-                ObjectInputStream ois = new ObjectInputStream(fis);
-        
-                // Read objects
-                Object objTemp = null;
-                while(!(objTemp = ois.readObject()).equals(null)) {  list.add( objTemp);  }
-                
-                ois.close();
-                fis.close();
-            }catch(EOFException eof){
-                // Continue and return
-            }
-            
-            
-            return list.toArray( new Object[list.size()] );
-        }
-        */
         @SuppressWarnings("unchecked")
-        public static <Type> Type[] fileObjectToObject(File fileObj, Class<Type> cls) throws IOException, ClassNotFoundException {
+        public static <Type> Type[] fileObjectToObject(String fileName, Class<Type> cls) throws IOException, ClassNotFoundException {
+            File fileObj = getFileObject(fileName);
             List<Type> list = new ArrayList<Type>();
             try{
                 FileInputStream fis = new FileInputStream(fileObj);
@@ -56,16 +36,15 @@ public class storeToFile{
                 
                 ois.close();
                 fis.close();
-            }catch(EOFException eof){
-                // Continue and return
             }
+            catch(EOFException eof){  /* Continue and return  */  }
+
             
             return list.toArray( (Type[]) java.lang.reflect.Array.newInstance(cls, list.size()) );
         }
     
-        
-        public static <Type> void objectToFileObject(Type[] objList, File fileObj) throws IOException {
-        
+        public static <Type> void objectToFileObject(String fileName, Type[] objList) throws IOException {
+            File fileObj = getFileObject(fileName);
             FileOutputStream fos = new FileOutputStream(fileObj);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
         
