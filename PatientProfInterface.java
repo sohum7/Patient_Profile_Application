@@ -21,6 +21,7 @@ public abstract class PatientProfInterfaceAbstract {
 public class PatientProfInterface extends PatientProfInterfaceAbstract{
 
     private PatientProfDB db = null;
+    private final int backValOption = -1;
 
     private enum menuMain {
         createPatProf       (1, "Enter a new patient profile:"),
@@ -53,7 +54,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         private final int optionCode;
         private final String optionString;
 
-        menuModifPatientProf(int optionCode, String optionString) {
+        menuUpdatePatientProf(int optionCode, String optionString) {
             this.optionCode = optionCode;
             this.optionString = optionString;
         }
@@ -62,15 +63,15 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         public String toString() {  System.out.println("("+this.getOptionCode()+") "+this.getOptionString());  }
     }
     private enum menuUpdateMedCond {
-        mdContact      (1, ),
-        mdPhone        (2, ),
-        illType        (3, ),
-        algType        (4, );
+        mdContact      (6, ),
+        mdPhone        (7, ),
+        illType        (8, ),
+        algType        (9, );
 
         private final int optionCode;
         private final String optionString;
 
-        menuModifMedCond(int optionCode, String optionString) {
+        menuUpdateMedCond(int optionCode, String optionString) {
             this.optionCode = optionCode;
             this.optionString = optionString;
         }
@@ -83,12 +84,12 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         this.db = new PatientProfDB(fileName);
     }
 
-    private void displayMenuMainOptions(){
-        for(menuMain op : menuMain.values()) {  op.toString();  }
-    }
+    private void displayMenuMain() {  for(menuMain op : menuMain.values()) { op.toString(); }  }
+    private void displayMenuUpdatePatientProf() {  for(menuUpdatePatientProf op : menuUpdatePatientProf.values()) { op.toString(); }  }
+    private void displayMenuUpdateMedCond() {  for(menuUpdateMedCond op : menuUpdateMedCond.values()) { op.toString(); }  }
     private void enterMenuOptionCode() {  System.out.println("Enter a option: ");  }
 
-    private void mapMenuOptionsToMethod(int optionCode){
+    private void mapMenuMainToMethod(int optionCode){
         switch(optionCode){
             case menuMain.createPatProf.getOptionCode():      this.createNewPatientProf();  break;
             case menuMain.deletePatProf.getOptionCode():      this.deletePatientProf();     break;
@@ -98,10 +99,87 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             case menuMain.commitAllPatProfs.getOptionCode():  this.writeToDB();             break;
             case menuMain.fetchAllPatProfs.getOptionCode():   this.initDB();                break;
             case menuMain.exit.getOptionCode():                                             break;
-            default:                                      System.out.println("Incorrect code was entered. Please try again");
+            default:                                      System.out.println("Incorrect code was entered. Please try again"); break;
         }
     }
+    private boolean mapMenuUpdatePatientProfToMethod(PatientProf p, int optionCode){
+
+        // Make sure PatientProf p isnt passed by value
+
+        switch(optionCode){
+            case menuUpdatePatientProf.address.getOptionCode():     this.changeAddress();     return false; break;
+            case menuUpdatePatientProf.phone.getOptionCode():       this.changePhone();       return false; break;
+            case menuUpdatePatientProf.insuType.getOptionCode():    this.changeInsuType();    return false; break;
+            case menuUpdatePatientProf.coPay.getOptionCode():       this.changeCoPay();       return false; break;
+            case menuUpdatePatientProf.patientType.getOptionCode(): this.changePatientType(); return false; break;
+        }
+        return true;
+    }
+    private void changeAddress() {
+    }
+    private void changePhone() {
+    }
+    private void changeInsuType() {
+    }
+    private void changeCoPay() {
+    }
+    private void changePatientType() {
+    }
+
+    private boolean mapMenuUpdateMedCondToMethod(PatientProf p, int optionCode){
+
+        // Make sure PatientProf p isnt passed by value
+
+        switch(optionCode){
+            case menuUpdateMedCond.mdContact.getOptionCode(): this.changeMdContact(); return false; break;
+            case menuUpdateMedCond.mdPhone.getOptionCode():   this.changeMdPhone();   return false; break;
+            case menuUpdateMedCond.illType.getOptionCode():   this.changeIllType();   return false; break;
+            case menuUpdateMedCond.algType.getOptionCode():   this.changeAlgType();   return false; break;
+            }
+        return true;
+    }
+    private void changeMdContact() {
+    }
+    private void changeMdPhone() {
+    }
+    private void changeIllType() {
+    }
+    private void changeAlgType() {
+    }
+
+    private boolean mapMenuEnd(int optionCode){
+
+        // Make sure PatientProf p isnt passed by value
+
+        switch(optionCode){
+            case backValOption: return false;
+            default:            System.out.println("Incorrect code was entered. Please try again");
+        }
+        return true;
+    }
+
+    public void changeKeyAtttributes(PatientProf p){
+        int optionCode;
+        whilFfe(true){
+
+
+            if(this.mapMenuUpdatePatientProfToMethod(p, optionCode)){
+                if(this.mapMenuUpdateMedCondToMethod(p, optionCode)){
+                    if(!this.mapMenuEnd(optionCode)){
+                        break;
+                    }
+                }
+            }
+
+
+        }
+
+
+
+
+    }
     
+
     private Scanner inputScanner() {  return new Scanner(System.in);  }
 
     public void getUserChoice(){
@@ -109,7 +187,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         Scanner sn = null;
         int userSelection = 0;
         do{
-            this.displayMenuOptions();
+            this.displayMenuMain();
 
             try{
                 this.enterMenuOptionCode();
@@ -130,9 +208,16 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             }catch(Exception e){
                 System.out.println("Error" + e);
             }
-        }while(userSelection != menu.exit.getOptionCode());
+        }while(userSelection != menuMain.exit.getOptionCode());
 
         if(sn != null) {  sn.close();  }
+    }
+
+    public void getUserChoicePatientProf(){
+
+        Scanner sn = null;
+        int userSelection = 0;
+
     }
 
     public void deletePatientProf(){
@@ -140,9 +225,10 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         Scanner sn = null;
         try{
             if(sn == null) {  sn = inputScanner();  }
-            System.out.println("Enter your name: ");
-            String name = sn.nextLine();
             System.out.println("Enter your adminID: ");
+            String adminID = sn.nextLine();
+            System.out.println("Enter patient's last name: ");
+            String name = sn.nextLine();
             String adminID = sn.nextLine();
 
             //db function
@@ -168,12 +254,11 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         Scanner sn = null;
         try{
             if(sn == null) {  sn = inputScanner();  }
-            System.out.println("Enter your name: ");
-            String name = sn.nextLine();
             System.out.println("Enter your adminID: ");
             String adminID = sn.nextLine();
+            System.out.println("Enter patient's last name: ");
+            String name = sn.nextLine();
 
-            //db function
             if(this.db.findProfile(adminID, name) != null) {  System.out.println("SUCCESS - "+name+"'s patient profile found successfully");  }
             else {  System.out.println("FAILED - Unable to locate "+name+"'s patient profile");  }
         }catch(IOException e){
@@ -188,17 +273,19 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
     public void updatePatientProf(){
 
         Scanner sn = null;
+
         try{
             if(sn == null) {  sn = inputScanner();  }
-            System.out.println("Enter your name: ");
-            String name = sn.nextLine();
             System.out.println("Enter your adminID: ");
             String adminID = sn.nextLine();
+            System.out.println("Enter patient's last name: ");
+            String name = sn.nextLine();
             PatientProf patient = this.db.findProfile(adminID, name);
-            int index = this.db.getCurrentProfileIndex();
+            int patientProfIndex = this.db.getCurrentProfIndex();
 
-            //db function
-            if(patient != null) {  System.out.println("SUCCESS - "+name+"'s patient profile found successfully"); this.displayPatientProf(patient); }
+            
+
+            if(patient != null && patientProfIndex != -1) {  System.out.println("SUCCESS - "+name+"'s patient profile found successfully"); this.displayPatientProf(patient); }
             else {  System.out.println("FAILED - Unable to locate "+name+"'s patient profile");  }
         }catch(IOException e){
             System.out.println("ERROR - I/O Error");
@@ -207,7 +294,6 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         }
 
         if(sn != null) {  sn.close();  }
-
     }
 
     public void displayPatientProf(PatientProf patient){
@@ -226,11 +312,10 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         System.out.println("Allergy Type:          "+mc.getAlgType());
         System.out.println("Illness Type:          "+mc.getIllType());
     }
-
     public void displayAllPatientProf(){
 
         Scanner sn = null;
-        
+
         try{
             System.out.println("AdminID: ");
             String adminID = sn.nextLine();
