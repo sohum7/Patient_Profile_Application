@@ -1,4 +1,3 @@
-package listToFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,46 +12,49 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class storeToFile{
-
-    // Requirements:
-    //    class implements Serialize
-    
     
     public static class storeObject{
-        public static File getFileObject(String fileName) throws IOException {  if(!fileName.equals("")) { return new File(fileName); }
+        public static File getFileObject(String fileName) throws IOException {  if(!fileName.isBlank()) { return new File(fileName); }
         throw new IOException(); }
 
         @SuppressWarnings("unchecked")
         public static <Type> Type[] fileObjectToObject(String fileName, Class<Type> cls) throws IOException, ClassNotFoundException {
             File fileObj = getFileObject(fileName);
             List<Type> list = new ArrayList<Type>();
-            try{
-                FileInputStream fis = new FileInputStream(fileObj);
+            try(FileInputStream fis = new FileInputStream(fileObj)){
                 ObjectInputStream ois = new ObjectInputStream(fis);
         
                 // Read objects
-                Object objTemp = null;
-                while(!(objTemp = ois.readObject()).equals(null)) {  list.add((Type) objTemp);  }
+                Type objTemp = null;
+                while(!(objTemp = (Type) ois.readObject()).equals(null)) {  list.add(objTemp);  }
                 
                 ois.close();
                 fis.close();
             }
+            catch(FileNotFoundException e){  /* .............  */  }
             catch(EOFException eof){  /* Continue and return  */  }
+            catch(Exception e){  /* .............  */  }
 
-            
             return list.toArray( (Type[]) java.lang.reflect.Array.newInstance(cls, list.size()) );
         }
     
-        public static <Type> void objectToFileObject(String fileName, Type[] objList) throws IOException {
+        public static <Type> boolean objectToFileObject(String fileName, Type[] objList) throws IOException {
             File fileObj = getFileObject(fileName);
-            FileOutputStream fos = new FileOutputStream(fileObj);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            try(FileOutputStream fos = new FileOutputStream(fileObj)){
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
         
-            for(Type objTemp : objList) {  oos.writeObject(objTemp);  }
-        
-            oos.close();
-            fos.close();
+                for(Type objTemp : objList) {  oos.writeObject(objTemp);  }
+            
+                oos.close();
+                fos.close();
+                return true;
+            }
+            catch(FileNotFoundException e){  System.out.println("FNF"); e.printStackTrace();/* .............  */  }
+            catch(EOFException eof){  System.out.println("EOF"); eof.printStackTrace();/* Continue and return  */  }
+            catch(Exception e){  System.out.println("E"); e.printStackTrace();/* .............  */  }
+
+            return false;
         }
     }
-    
 }

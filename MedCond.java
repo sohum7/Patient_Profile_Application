@@ -1,6 +1,11 @@
 // medcond is a class that is used as an argument of the PatientProf class, containing information such as medical contact info and so on
+import java.io.Serializable;
 
-public class MedCond{
+public class MedCond implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4361645060520838501L;
     // arguments  vvvvv
     private String mdContact;
     private String mdPhone;
@@ -9,89 +14,52 @@ public class MedCond{
     // arguments ^^^^^
 
     //constructor vvvv
-    public MedCond(String MDcontact, String MDphone, String Algtype, String Illtype){
-        mdContact = MDcontact;
-        mdPhone = MDphone;
-        int t = 1;
-        try{
-            if(Algtype == "none" || Algtype == "food" || Algtype == "medication" || Algtype == "other"){
-                algType = Algtype;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Patient Type must be \"none\", \"food\", \"medication\", or \"other\", SET TO null.");
-            }
-
-
-
-        try{
-            if(Illtype == "none" || Illtype == "CHD" || Illtype == "diabetes" || Illtype == "asthma" || Illtype == "other"){
-                illType = Illtype;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Patient Type must be \"none\", \"CHD\", \"diabetes\", \"asthma\", or \"other\", SET TO null.");
-            }
-
+    public MedCond(String MDcontact, String MDphone, String Algtype, String Illtype) throws IllegalArgumentException {
+        this.updatemdContact(MDcontact);
+        this.updatemdPhone(MDphone);
+        this.updateAlgType(Algtype);
+        this.updateIllType(Illtype);
         }
 
     //constructor ^^^^^^^
 
     //get methods, they print the info required, and return them vvvvvvvvvvvvvv
     public String getmdContact(){
-        System.out.println(mdContact);
-        return mdContact;
+        return this.mdContact;
     }
     public String getmdPhone(){
-        System.out.println(mdPhone);
-        return mdPhone;
+        return this.mdPhone;
     }
     public String getAlgType(){
-        System.out.println(algType);
-        return algType;
+        return this.algType;
     }
     public String getIllType(){
-        System.out.println(illType);
-        return illType;
+        return this.illType;
     }
     //get methods, they print the info required, and return them ^^^^^^^^^^^^^
 
     //update methods, they update their respective arguments vvvvvvvvvvvvvvvvv
     public void updatemdContact(String n){
-        mdContact = n;
+        this.mdContact = n;
     }
     public void updatemdPhone(String n){
-        mdPhone = n;
+        this.mdPhone = n;
     }
-    public void updateAlgType(String n){
-        int t = 1;
-        try{
-            if(n == "none" || n == "food" || n == "medication" || n == "other"){
-                algType = n;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Patient Type must be \"none\", \"food\", \"medication\", or \"other\", NOT UPDATED.");
-            }
-
-
+    private boolean checkIllType(String Illtype){
+        if(Illtype.equalsIgnoreCase("none") || Illtype.equalsIgnoreCase("CHD") || Illtype.equalsIgnoreCase("diabetes") || Illtype.equalsIgnoreCase("asthma") || Illtype.equalsIgnoreCase("other")) { return true; }
+        return false;
     }
-    public void updateIllType(String n){
-        int t = 1;
-        try{
-            if(n == "none" || n == "CHD" || n == "diabetes" || n == "asthma" || n == "other"){
-                illType = n;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Patient Type must be \"none\", \"CHD\", \"diabetes\", \"asthma\", or \"other\", NOT UPDATED.");
-            }
-
-
+    private boolean checkAlgType(String Algtype){
+        if(Algtype.equalsIgnoreCase("none") || Algtype.equalsIgnoreCase("food") || Algtype.equalsIgnoreCase("medication") || Algtype.equalsIgnoreCase("other")) { return true; }
+        return false;
+    }
+    public void updateAlgType(String n) throws IllegalArgumentException {
+        if(this.checkAlgType(n)) { this.algType = n; }
+        else { throw new IllegalArgumentException(); }
+    }
+    public void updateIllType(String n) throws IllegalArgumentException {
+        if(this.checkIllType(n)) { this.illType = n; }
+        else { throw new IllegalArgumentException(); }
     }
     //update methods, they update their respective arguments  ^^^^^^^^^^^^^^^^^^^^^
 

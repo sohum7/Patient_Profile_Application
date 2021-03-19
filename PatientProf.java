@@ -5,7 +5,12 @@
   // To be implemented
 }*/
 
-import java.io.Serializable; public class PatientProf implements Serializable{
+import java.io.Serializable;
+public class PatientProf implements Serializable{
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     // arguments vvvvvvvvvvvv
     private String adminID;
     private String firstName;
@@ -19,131 +24,86 @@ import java.io.Serializable; public class PatientProf implements Serializable{
     //arguments ^^^^^^^^^^^^^^^^
 
     //Constructor vvvvvvvvvvvvv
-    public PatientProf(String Adminid, String Firstname, String Lastname, String Address, String Phone, float Copay, String Insutype, String Patienttype, MedCond mdcnd) {
-        adminID = Adminid;
-        firstName = Firstname;
-        lastName = Lastname;
-        address = Address;
-        phone = Phone;
-        coPay = Copay;
-        int t = 1;
-        try{
-            if(Insutype == "Private" || Insutype == "Government"){
-                insuType = Insutype;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Insurance Type must be either \"Private\" or \"Government\", SET TO null.");
-            }
-
-
-        try{
-            if(Patienttype == "Senior" || Patienttype == "Pediatric" || Patienttype == "Adult"){
-                patientType = Patienttype;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Patient Type must be \"Senior\", \"Pediatric\", or \"Adult\", SET TO null.");
-            }
-
-
-        medCondInfo = mdcnd;
+    public PatientProf(String Adminid, String Firstname, String Lastname, String Address, String Phone, float Copay, String Insutype, String Patienttype, MedCond mdcnd) throws IllegalArgumentException {
+        this.updateadminID(Adminid);
+        this.updateFirstName(Firstname);
+        this.updateLastName(Lastname);
+        this.updateAddress(Address);
+        this.updatePhone(Phone);
+        this.updateCoPay(Copay);
+        this.updateInsuType(Insutype);
+        this.updatePatientType(Patienttype);
+        this.updateMedCondInfo(mdcnd);
     }
     //Constructor ^^^^^^^^^^^^^^^^^^^
 
     //get methods, they print and return their respective values vvvvvvvvvvvvv
     public String getadminID(){
-        System.out.println(adminID);
-        return adminID;
+        return this.adminID;
     }
     public String getFirstName(){
-        System.out.println(firstName);
-        return firstName;
+        return this.firstName;
     }
     public String getLastName(){
-        System.out.println(lastName);
-        return lastName;
+        return this.lastName;
     }
     public String getAddress(){
-        System.out.println(address);
-        return address;
+        return this.address;
     }
     public String getPhone(){
-        System.out.println(phone);
-        return phone;
+        return this.phone;
     }
     public String getInsuType(){
-        System.out.println(insuType);
-        return insuType;
+        return this.insuType;
     }
     public String getPatientType(){
-        System.out.println(patientType);
-        return patientType;
+        return this.patientType;
     }
-    public void getMedCondInfo(){
-        medCondInfo.getAlgType();
-        medCondInfo.getmdContact();
-        medCondInfo.getmdPhone();
-        medCondInfo.getIllType();
+    public MedCond getMedCondInfo(){
+        return this.medCondInfo;
     }
     public float getCoPay(){
-        System.out.println(coPay);
-        return coPay;
+        return this.coPay;
     }
     //get methods ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     //update methods, they update their respective values to what is inputed into them vvvvvvvvvvvvvvvvvvvvvv
     public void updateadminID(String n){
-        adminID = n;
+        this.adminID = n;
     }
     public void updateFirstName(String n){
-        firstName = n;
+        this.firstName = n;
     }
     public void updateLastName(String n){
-        lastName = n;
+        this.lastName = n;
     }
     public void updateAddress(String n){
-        address = n;
+        this.address = n;
     }
     public void updatePhone(String n){
-        phone = n;
+        this.phone = n;
     }
-    public void updateInsuType(String n){
-        int t = 1;
-        try{
-            if(n == "Private" || n == "Government"){
-                insuType = n;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Insurance Type must be either \"Private\" or \"Government\", NOT UPDATED.");
-            }
-
-        }
-
-
-    public void updatePatientType(String n){
-        int t = 1;
-        try{
-            if(n == "Senior" || n == "Pediatric" || n == "Adult"){
-                patientType = n;
-            }
-            else{
-                t = t / 0;}
-            }catch(Exception e){
-                System.out.println("ERROR: Patient Type must be \"Senior\", \"Pediatric\", or \"Adult\", NOT UPDATED.");
-            }
-
-
+    private boolean checkInsuType(String Insutype) {
+        if(Insutype.equalsIgnoreCase("Private") || Insutype.equalsIgnoreCase("Government")) { return true; }
+        return false;
+    }
+    private boolean checkPatientType(String Patienttype) {
+        if(Patienttype.equalsIgnoreCase("Senior") || Patienttype.equalsIgnoreCase("Pediatric") || Patienttype.equalsIgnoreCase("Adult")) { return true; }
+        return false;
+    }
+    public void updateInsuType(String n) throws IllegalArgumentException { 
+        if(this.checkInsuType(n)) { this.insuType = n; }
+        else { throw new IllegalArgumentException(); }
+    }
+    public void updatePatientType(String n) throws IllegalArgumentException {
+        if(this.checkPatientType(n)) { this.patientType = n; }
+        else { throw new IllegalArgumentException(); }
     }
     public void updateMedCondInfo(MedCond n){
-        medCondInfo = n;
+        this.medCondInfo = n;
     }
     public void updateCoPay(float n){
-        coPay = n;
+        this.coPay = n >= 0F ? n : 0F;
     }
     // update methods ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
