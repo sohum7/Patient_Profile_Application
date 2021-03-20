@@ -72,11 +72,12 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
     public PatientProfInterface(String fileName) throws Exception {  this.db = new PatientProfDB(fileName); this.getUserChoice();  }
 
     private void setScanner() {  this.sn = new Scanner(System.in);  }
+    private void newLine() {  System.out.println();  }
 
-    private void displayMenuMain() {  for(menuMain op : menuMain.values()) { System.out.println(op); }  }
-    private void displayMenuUpdatePatientProf() {  for(menuUpdatePatientProf op : menuUpdatePatientProf.values()) { System.out.println(op); }  }
+    private void displayMenuMain() {  this.newLine(); for(menuMain op : menuMain.values()) { System.out.println(op); } this.newLine();  }
+    private void displayMenuUpdatePatientProf() {  this.newLine(); for(menuUpdatePatientProf op : menuUpdatePatientProf.values()) { System.out.println(op); }  }
     private void displayMenuUpdateMedCond() {  for(menuUpdateMedCond op : menuUpdateMedCond.values()) { System.out.println(op); }  }
-    private void displayMenuEnd() {  System.out.println("("+backValOption+") "+"Back"+": ");  }
+    private void displayMenuEnd() {  System.out.println("("+backValOption+") "+"Back"+": "); this.newLine();  }
 
     private void inputMismatchMessage() {  System.out.println("ERROR - Try again. Input TYPE was invalid.");  }
     private void illegalArgumentMessage() {  System.out.println("ERROR - Try again. Input VALUE was invalid.");  }
@@ -126,7 +127,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         this.setScanner();
         p.updatePhone(this.sn.nextLine().trim());
     }
-    private void changeInsuType(PatientProf p) throws IllegalArgumentException {
+    private void changeInsuType(PatientProf p) {
         System.out.println("Enter an insurance type: ");
         this.setScanner();
         while(true) {
@@ -141,7 +142,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             catch (InputMismatchException e){ this.sn.nextLine(); this.inputMismatchMessage(); } 
         }
     }
-    private void changePatientType(PatientProf p) throws IllegalArgumentException {
+    private void changePatientType(PatientProf p) {
         System.out.println("Enter a patient type: ");
         this.setScanner();
 
@@ -174,7 +175,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         
         p.getMedCondInfo().updatemdPhone(this.sn.nextLine().trim());
     }
-    private void changeIllType(PatientProf p) throws IllegalArgumentException {
+    private void changeIllType(PatientProf p) {
         System.out.println("Enter an illness type: ");
         this.setScanner();
 
@@ -183,7 +184,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             catch (IllegalArgumentException e){  this.illegalArgumentMessage();  }
         }
     }
-    private void changeAlgType(PatientProf p) throws IllegalArgumentException {
+    private void changeAlgType(PatientProf p) {
         System.out.println("Enter an allergy type: ");
         this.setScanner();
 
@@ -294,9 +295,9 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             this.setScanner();
 
             String adminID = this.getAdminID();
-            
+
             PatientProf[] ptemp = this.db.findProfiles(adminID);
-            if(ptemp.length == 0) {  System.out.println("SUCCESS - No profiles created by "+adminID+". Try again without extra ");  }
+            if(ptemp.length == 0) {  System.out.println("SUCCESS - No profiles created by "+adminID+"");  }
             for(PatientProf p : this.db.findProfiles(adminID)){  this.displayPatientProf(p);  }
         }catch(NullPointerException npe){  System.out.println("SUCCESS - No profiles found, but no errors either");
         }catch(IOException e){  System.out.println("ERROR - I/O Error");
@@ -314,7 +315,8 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
     }
 
     public void createNewPatientProfile(){
-        PatientProf p = this.createNewPatientProf();
+        PatientProf p = new PatientProf("", "", "", "", "", 0, "Private", "Pediatric", new MedCond("", "", "none", "none"));
+        this.createNewPatientProf(p);
         if(p != null){
             if(this.db.insertNewProfile(p)) {  System.out.println("SUCCESS - Patient profile created");  } 
             else { System.out.println("ERROR - Unable to create Patient Profile"); }
@@ -322,55 +324,63 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             System.out.println("ERROR - Unable to create Patient Profile");
             System.out.println("ERROR - (AdminID, lastName) pair MAY already exist");
         }
+        p = null;
     }
-    public PatientProf createNewPatientProf(){
+    public void createNewPatientProf(PatientProf p){
         try{
             this.setScanner();
 
-            String adminID = this.getAdminID();
+            while(true) { try{ p.updateadminID(this.getAdminID()); break; }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
+            
+            while(true) { try{
+                System.out.println("First name: ");
+                p.updateFirstName(this.sn.nextLine().trim());
+                break;
+            }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
 
-            System.out.println("First name: ");
-            String firstName = this.sn.nextLine().trim();
+            p.updateLastName(this.getLastName());
 
-            String lastName = this.getLastName();
+            while(true) { try{
+                System.out.println("Address: ");
+                p.updateAddress(this.sn.nextLine().trim());
+                break;
+           }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
 
-            System.out.println("Address: ");
-            String address = this.sn.nextLine().trim();
+            this.changePhone(p);
 
-            System.out.println("Phone: ");
-            String phone = this.sn.nextLine().trim();
+            this.changeCoPay(p);
 
-            System.out.println("Copay: ");
-            float coPay = this.sn.hasNextFloat() ? this.sn.nextFloat() : 0F; this.sn.nextLine();
+            this.changeInsuType(p);
 
-            System.out.println("Insurance Type: ");
-            String insuType = this.sn.nextLine().trim();
+            this.changePatientType(p);
 
-            System.out.println("Patient Type: ");
-            String patientType = this.sn.nextLine().trim();
-
-            MedCond mc = this.createNewMedCond();
-            if(mc != null) {  return new PatientProf(adminID, firstName, lastName, address, phone, coPay, insuType, patientType, mc);  }
+            this.createNewMedCond(p);
+            
         }catch(IllegalArgumentException e){  this.illegalArgumentMessage();
         }catch(InputMismatchException e){  this.inputMismatchMessage();
         }catch(Exception e){  this.miscExceptionMessage(e);
-        }  return null;
+        }
     }
-    public MedCond createNewMedCond(){
+    public MedCond createNewMedCond(PatientProf p){
 
         try{
             this.setScanner();
+            while(true) { try{
+                System.out.println("Medical Contact: ");
+                p.getMedCondInfo().updatemdContact(this.sn.nextLine().trim());
+                break;
+            }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
 
-            System.out.println("Medical Contact: ");
-            String mdContact = this.sn.nextLine().trim();
-            System.out.println("Medical Contact Phone: ");
-            String mdPhone = this.sn.nextLine().trim();
-            System.out.println("Allergy Type: ");
-            String algType = this.sn.nextLine().trim();
-            System.out.println("Illness Type: ");
-            String illType = this.sn.nextLine().trim();
+            while(true) { try{
+                System.out.println("Medical Contact Phone: ");
+                p.getMedCondInfo().updatemdPhone(this.sn.nextLine().trim());
+                break;
+            }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
 
-            return new MedCond(mdContact, mdPhone, algType, illType);
+            this.changeAlgType(p);
+            this.changeIllType(p);
+
+            //return new MedCond(mdContact, mdPhone, algType, illType);
         }catch(IllegalArgumentException e){  this.illegalArgumentMessage();
         }catch(InputMismatchException e){  this.inputMismatchMessage();
         }catch(Exception e){  this.miscExceptionMessage(e);

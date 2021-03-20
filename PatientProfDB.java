@@ -26,13 +26,11 @@ public class PatientProfDB extends PatientProfDBAbstract {
     private static final PatientProf[] addObjElement(PatientProf[] arr, PatientProf toAdd) {
         List<PatientProf> listArray = new ArrayList<PatientProf>(Arrays.asList(arr));
         listArray.add(toAdd);
-        //System.out.println(listArray.toArray(arr));
         return listArray.toArray(arr);
     }
     private static final PatientProf[] deleteObjElement(PatientProf[] arr, int toRemove) {
         List<PatientProf> listArray = new ArrayList<PatientProf>(Arrays.asList(arr));
         listArray.remove(toRemove);
-        System.out.println(listArray.toArray(arr));
         return listArray.toArray(arr);
     }
 
