@@ -20,7 +20,7 @@ public class PatientProf implements Serializable{
     private float coPay;
     private String insuType;
     private String patientType;
-    private MedCond medCondInfo;
+    private MedCond medCondInfo = new MedCond("", "", "none", "none");
     //arguments ^^^^^^^^^^^^^^^^
 
     //Constructor vvvvvvvvvvvvv
@@ -35,6 +35,18 @@ public class PatientProf implements Serializable{
         this.updatePatientType(Patienttype);
         this.updateMedCondInfo(mdcnd);
     }
+    public PatientProf(PatientProf p) throws IllegalArgumentException {
+        this.updateadminID(p.getadminID());
+        this.updateFirstName(p.getFirstName());
+        this.updateLastName(p.getLastName());
+        this.updateAddress(p.getAddress());
+        this.updatePhone(p.getPhone());
+        this.updateCoPay(p.getCoPay());
+        this.updateInsuType(p.getInsuType());
+        this.updatePatientType(p.getPatientType());
+        this.updateMedCondInfo(p.getMedCondInfo());
+    }
+
     //Constructor ^^^^^^^^^^^^^^^^^^^
 
     //get methods, they print and return their respective values vvvvvvvvvvvvv
@@ -100,7 +112,10 @@ public class PatientProf implements Serializable{
         else { throw new IllegalArgumentException(); }
     }
     public void updateMedCondInfo(MedCond n){
-        this.medCondInfo = n;
+        this.medCondInfo.updatemdContact(n.getmdContact());
+        this.medCondInfo.updatemdPhone(n.getmdPhone());
+        this.medCondInfo.updateAlgType(n.getAlgType());
+        this.medCondInfo.updateIllType(n.getIllType());
     }
     public void updateCoPay(float n){
         this.coPay = n >= 0F ? n : 0F;

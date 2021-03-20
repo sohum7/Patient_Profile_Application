@@ -24,7 +24,7 @@ public abstract class PatientProfDBAbstract {
     public final boolean indexInPatientList(int index) {  return index >= 0 && index < this.getPatientProfList().length;  }
 
     protected final int getPatientProfArrIndex(String adminID, String name){ 
-        for(int i=0; i<this.getPatientProfList().length; i++){  if (this.getPatientProfList()[i].getadminID().equals(adminID) && this.getPatientProfList()[i].getLastName().equals(name)) { return i; }  }
+        for(int i=0; i<this.getPatientProfList().length; i++){  if (this.getPatientProfList()[i] != null && this.getPatientProfList()[i].getadminID().equals(adminID) && this.getPatientProfList()[i].getLastName().equals(name)) { return i; }  }
         return -1;
     }
 

@@ -23,6 +23,33 @@ public class PatientProfDB extends PatientProfDBAbstract {
         this.currentProfileIndex = -1;
     }
 
+    /*
+    private static final PatientProf[] addObjElement(PatientProf[] arr, PatientProf toAdd) {
+        int oldArrayLength = arr.length;
+        PatientProf[] arrNew = new PatientProf[arr.length+1];
+        arrNew[oldArrayLength] = new PatientProf(toAdd);
+        while(oldArrayLength >= 0){
+            arrNew[oldArrayLength] = new PatientProf(arr[oldArrayLength]);
+            oldArrayLength--;
+        }
+        return arrNew;
+    }
+    private static final PatientProf[] deleteObjElement(PatientProf[] arr, int toRemove) {
+        int oldArrayLength = arr.length;
+        PatientProf[] arrNew = new PatientProf[arr.length-1];
+        while(oldArrayLength >= 0 && oldArrayLength != toRemove){
+            arrNew[oldArrayLength] = new PatientProf(arr[oldArrayLength]);
+            oldArrayLength--;
+        }
+        oldArrayLength--;
+        while(oldArrayLength >= 0 && oldArrayLength != toRemove){
+            arrNew[oldArrayLength] = new PatientProf(arr[oldArrayLength]);
+            oldArrayLength--;
+        }
+        return arrNew;
+    }
+    */
+    
     private static final PatientProf[] addObjElement(PatientProf[] arr, PatientProf toAdd) {
         List<PatientProf> listArray = new ArrayList<PatientProf>(Arrays.asList(arr));
         listArray.add(toAdd);
@@ -49,7 +76,7 @@ public class PatientProfDB extends PatientProfDBAbstract {
     protected PatientProf[] findProfiles(String adminID) throws Exception {
         if(this.numPatient == 0) {  throw new Exception("No patient profiles in system");  }
         PatientProf[] adminIDPatients = new PatientProf[0];
-        for(PatientProf p : this.getPatientProfList()) {  if(p.getadminID().equals(adminID)) { adminIDPatients = addObjElement(adminIDPatients, p); }  }
+        for(PatientProf p : this.getPatientProfList()) {  if(p != null && p.getadminID().equals(adminID)) { adminIDPatients = addObjElement(adminIDPatients, p); }  }
 
         return adminIDPatients;
     }
@@ -73,7 +100,7 @@ public class PatientProfDB extends PatientProfDBAbstract {
     }
     protected boolean deleteProfile(String adminID, String Name){
         int resIndex = this.getPatientProfArrIndex(adminID, Name);
-        if(resIndex != -1) {  this.patientList = deleteObjElement(this.patientList, resIndex); this.updateNumPatient();  }
+        if(resIndex != -1) { System.out.println("LENGTH: "+this.patientList.length); this.patientList = deleteObjElement(this.patientList, resIndex); this.updateNumPatient(); System.out.println("LENGTH: "+this.patientList.length); }
         return resIndex != -1;
     }
 

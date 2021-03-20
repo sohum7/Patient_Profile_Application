@@ -53,7 +53,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
     }
     private static enum menuUpdateMedCond {
         mdContact      (6, "Change medical contact"),
-        mdPhone        (7, "Change phone number"),
+        mdPhone        (7, "Change medical phone number"),
         illType        (8, "Change illness type"),
         algType        (9, "Change allergy type");
 
@@ -81,7 +81,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
 
     private void inputMismatchMessage() {  System.out.println("ERROR - Try again. Input TYPE was invalid.");  }
     private void illegalArgumentMessage() {  System.out.println("ERROR - Try again. Input VALUE was invalid.");  }
-    private void miscExceptionMessage(Exception e) {  System.out.println("ERROR - "+"Unknown error"/*+e*/ );  }
+    private void miscExceptionMessage(Exception e) {  System.out.println("ERROR - "+"Unknown error" );  e.printStackTrace();}
     
     private String getAdminID(){
         System.out.println("Enter your adminID: ");
@@ -100,7 +100,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         else if(optionCode == menuMain.displayAllPatProfs.getOptionCode()) { this.displayAllPatientProf(); }
         else if(optionCode == menuMain.commitAllPatProfs.getOptionCode())  { this.writeToDB(); }
         else if(optionCode == menuMain.fetchAllPatProfs.getOptionCode())   { this.initDB(); }
-        else if(optionCode == menuMain.exit.getOptionCode())               { this.writeToDB(); System.out.println("\n****         Goodbye          ****\n"); System.exit(0); }
+        else if(optionCode == menuMain.exit.getOptionCode())               { this.writeToDB(); }
         else { System.out.println("Incorrect code was entered. Please try again"); }
     }
     
@@ -315,14 +315,12 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
     }
 
     public void createNewPatientProfile(){
-        PatientProf p = new PatientProf("", "", "", "", "", 0, "Private", "Pediatric", new MedCond("", "", "none", "none"));
+        MedCond mc = new MedCond("", "", "none", "none");
+        PatientProf p = new PatientProf("", "", "", "", "", 0, "Private", "Adult", mc);
         this.createNewPatientProf(p);
         if(p != null){
             if(this.db.insertNewProfile(p)) {  System.out.println("SUCCESS - Patient profile created");  } 
-            else { System.out.println("ERROR - Unable to create Patient Profile"); }
-        } else {
-            System.out.println("ERROR - Unable to create Patient Profile");
-            System.out.println("ERROR - (AdminID, lastName) pair MAY already exist");
+            else { System.out.println("ERROR - Unable to create Patient Profile"); System.out.println("ERROR - (AdminID, lastName) pair MAY already exist"); }
         }
         p = null;
     }
@@ -333,7 +331,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             while(true) { try{ p.updateadminID(this.getAdminID()); break; }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
             
             while(true) { try{
-                System.out.println("First name: ");
+                System.out.println("Enter First name: ");
                 p.updateFirstName(this.sn.nextLine().trim());
                 break;
             }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
@@ -341,7 +339,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             p.updateLastName(this.getLastName());
 
             while(true) { try{
-                System.out.println("Address: ");
+                System.out.println("Enter an Address: ");
                 p.updateAddress(this.sn.nextLine().trim());
                 break;
            }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
@@ -361,30 +359,38 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         }catch(Exception e){  this.miscExceptionMessage(e);
         }
     }
-    public MedCond createNewMedCond(PatientProf p){
+    public void createNewMedCond(PatientProf p){
 
         try{
             this.setScanner();
-            while(true) { try{
-                System.out.println("Medical Contact: ");
-                p.getMedCondInfo().updatemdContact(this.sn.nextLine().trim());
-                break;
-            }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
 
-            while(true) { try{
-                System.out.println("Medical Contact Phone: ");
-                p.getMedCondInfo().updatemdPhone(this.sn.nextLine().trim());
-                break;
-            }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
+            System.out.println("Medical Contact: ");
+            String c = this.sn.nextLine().trim();
 
-            this.changeAlgType(p);
-            this.changeIllType(p);
+            System.out.println("Medical Contact Phone: ");
+            String ph = this.sn.nextLine().trim();
+
+            String a, i;
+            System.out.println("Allergy Type: ");
+            while(true) { try{
+                a = this.sn.nextLine().trim();
+                p.getMedCondInfo().updateAlgType(a);
+                break;
+           }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
+           System.out.println("Illness Type: ");
+           while(true) { try{
+                i = this.sn.nextLine().trim();
+                p.getMedCondInfo().updateIllType(i);
+                break;
+           }catch(IllegalArgumentException e){ this.illegalArgumentMessage(); } }
+            
+            p.updateMedCondInfo(new MedCond(c, ph, a, i));
 
             //return new MedCond(mdContact, mdPhone, algType, illType);
         }catch(IllegalArgumentException e){  this.illegalArgumentMessage();
         }catch(InputMismatchException e){  this.inputMismatchMessage();
         }catch(Exception e){  this.miscExceptionMessage(e);
-        }  return null;
+        }
     }
 
     public void getUserChoice(){
@@ -404,6 +410,8 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
             }catch(Exception e){  this.miscExceptionMessage(e);
             }
         }while(userSelection != menuMain.exit.getOptionCode());
+
+        System.out.println("\n****         Goodbye          ****\n"); System.exit(0);
 
         if(this.sn != null) {  this.sn.close();  }
     }

@@ -10,6 +10,6 @@ public abstract class PatientProfInterfaceAbstract {
     public abstract void displayAllPatientProf();
     public abstract void writeToDB();
     public abstract void initDB();
-    public abstract PatientProf createNewPatientProf();
-    public abstract MedCond createNewMedCond();
+    public abstract void createNewPatientProf(PatientProf p);
+    public abstract void createNewMedCond(PatientProf p);
 }
