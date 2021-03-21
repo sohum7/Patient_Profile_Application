@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-import jdk.incubator.foreign.MemoryLayout.PathElement;
-
 import java.util.InputMismatchException;
 import java.lang.System;
 
@@ -93,7 +91,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
     }
 
     private void mapMenuMainToMethod(int optionCode){
-        if(optionCode == menuMain.createPatProf.getOptionCode())           { this.createNewPatientProfile(); }
+        if(optionCode == menuMain.createPatProf.getOptionCode())           { this.createNewPatientProf(); }
         else if(optionCode == menuMain.deletePatProf.getOptionCode())      { this.deletePatientProf(); }
         else if(optionCode == menuMain.displayPatProf.getOptionCode())     { this.displayPatientProf(); }
         else if(optionCode == menuMain.updatePatProf.getOptionCode())      { this.updatePatientProf();  }
@@ -314,7 +312,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         catch(Exception e){  System.out.println("ERROR - unable to open file");  }
     }
 
-    public void createNewPatientProfile(){
+    public void createNewPatientProf(){
         MedCond mc = new MedCond("", "", "none", "none");
         PatientProf p = new PatientProf("", "", "", "", "", 0, "Private", "Adult", mc);
         this.createNewPatientProf(p);

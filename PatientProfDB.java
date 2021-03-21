@@ -22,33 +22,6 @@ public class PatientProfDB extends PatientProfDBAbstract {
         this.updateNumPatient();
         this.currentProfileIndex = -1;
     }
-
-    /*
-    private static final PatientProf[] addObjElement(PatientProf[] arr, PatientProf toAdd) {
-        int oldArrayLength = arr.length;
-        PatientProf[] arrNew = new PatientProf[arr.length+1];
-        arrNew[oldArrayLength] = new PatientProf(toAdd);
-        while(oldArrayLength >= 0){
-            arrNew[oldArrayLength] = new PatientProf(arr[oldArrayLength]);
-            oldArrayLength--;
-        }
-        return arrNew;
-    }
-    private static final PatientProf[] deleteObjElement(PatientProf[] arr, int toRemove) {
-        int oldArrayLength = arr.length;
-        PatientProf[] arrNew = new PatientProf[arr.length-1];
-        while(oldArrayLength >= 0 && oldArrayLength != toRemove){
-            arrNew[oldArrayLength] = new PatientProf(arr[oldArrayLength]);
-            oldArrayLength--;
-        }
-        oldArrayLength--;
-        while(oldArrayLength >= 0 && oldArrayLength != toRemove){
-            arrNew[oldArrayLength] = new PatientProf(arr[oldArrayLength]);
-            oldArrayLength--;
-        }
-        return arrNew;
-    }
-    */
     
     private static final PatientProf[] addObjElement(PatientProf[] arr, PatientProf toAdd) {
         List<PatientProf> listArray = new ArrayList<PatientProf>(Arrays.asList(arr));
@@ -100,7 +73,7 @@ public class PatientProfDB extends PatientProfDBAbstract {
     }
     protected boolean deleteProfile(String adminID, String Name){
         int resIndex = this.getPatientProfArrIndex(adminID, Name);
-        if(resIndex != -1) { System.out.println("LENGTH: "+this.patientList.length); this.patientList = deleteObjElement(this.patientList, resIndex); this.updateNumPatient(); System.out.println("LENGTH: "+this.patientList.length); }
+        if(resIndex != -1) { this.patientList = deleteObjElement(this.patientList, resIndex); this.updateNumPatient(); }
         return resIndex != -1;
     }
 
