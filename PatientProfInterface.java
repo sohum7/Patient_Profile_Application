@@ -14,10 +14,10 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
 
     public static enum menuMain {
         createPatProf       (1, "Enter a new patient profile"),
-        deletePatProf       (2, "Delete a patient profile by last name and adminID"),
-        displayPatProf      (3, "Display patient profile by last name and adminID"),
+        deletePatProf       (2, "Delete a patient profile"),
+        displayPatProf      (3, "Display patient profile"),
         updatePatProf       (4, "Update patient profile"),
-        displayAllPatProfs  (5, "Display all profiles by adminID"),
+        displayAllPatProfs  (5, "Display all profiles"),
         commitAllPatProfs   (6, "Save all patient profiles"),
         fetchAllPatProfs    (7, "Retrieve all patient profiles"),
         exit                (0, "Exit and save changes");
