@@ -249,17 +249,16 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
 
             PatientProf p = this.db.findProfile(adminID, lastName);
 
-            if(p != null) {  System.out.println("SUCCESS - "+lastName+"'s patient profile found successfully");  return p;
+            if(p != null) {  this.displayPatientProf(p); return p;
             } else {  System.out.println("FAILED - Unable to locate "+lastName+"'s patient profile");  }
         }catch(NullPointerException npe){  System.out.println("SUCCESS - No profiles found, but no errors either");
         }catch(IOException e){  System.out.println("ERROR - I/O Error");
         }catch(Exception e){  this.miscExceptionMessage(e);
-        }  return null;
+        } return null;
     }
     public void updatePatientProf(){
         try{
             PatientProf patient = this.findPatientProf();
-            //int patientProfIndex = this.db.getCurrentProfIndex();
 
             if(patient != null) { this.changeKeyAttributes(patient); }
         }catch(Exception e){  this.miscExceptionMessage(e);
@@ -275,7 +274,7 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
         System.out.println("AdminID:               "+patient.getadminID());
         System.out.println("Name:                  "+patient.getFirstName()+" "+patient.getLastName());
         System.out.println("Address:               "+patient.getAddress());
-        System.out.println("Phone:                 "+patient.getadminID());
+        System.out.println("Phone:                 "+patient.getPhone());
         System.out.println("Copay:                 "+patient.getCoPay());
         System.out.println("Insurance Type:        "+patient.getInsuType());
         System.out.println("Patient Type:          "+patient.getPatientType());
