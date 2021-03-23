@@ -1,6 +1,5 @@
 // medcond is a class that is used as an argument of the PatientProf class, containing information such as medical contact info and so on
 import java.io.Serializable;
-
 public class MedCond implements Serializable {
     /**
      *

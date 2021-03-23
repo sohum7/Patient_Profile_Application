@@ -1,10 +1,5 @@
 // Patient Profile class: used to record various patient information, contains medcond class
 
-
-/*public abstract PatientProfAbstract(){
-  // To be implemented
-}*/
-
 import java.io.Serializable;
 public class PatientProf implements Serializable{
     /**

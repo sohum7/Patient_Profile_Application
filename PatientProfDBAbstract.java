@@ -1,33 +1,41 @@
-////  Patient Profile Database
-//    A file will act like a database
-//      Data will be collected in an array
-//      Once done working with data, store back in file
+/* 
+
+PatientProfDBAbstract (Patient Profile Database abstract)
+Abstract class
+
+*/
+
 import java.io.IOException;
 
 public abstract class PatientProfDBAbstract {
 
-    // Eliminate comment below upon completion of PatientProf class
-    //
+    // Required attributes
+    //      Stores PatientProf objects in an array
+    //      Stores the file name
     protected PatientProf[] patientList;
     protected String fileName;
 
+    // PatientProf constructor
     public PatientProfDBAbstract(String fileName) {  this.updateFileAttribute(fileName);  }
 
+    // true if index value is within range to access element
+    protected final boolean indexInPatientList(int index) {  return index >= 0 && index < this.getPatientProfList().length;  }
+    
+    // update fileName attribute
     protected void updateFileAttribute(String fileName) {  this.fileName = fileName;  }
 
-
-    // NOTE NEEDED protected final PatientProf findProfileByIndex(int index) { if(this.inPatientProfList(index, this.patientList) { return this.patientList[index]; } return new PatientProf(); }
+    // return patientList attribute
     protected final PatientProf[] getPatientProfList() {  return this.patientList;  }
+    // return patientList element by index
     protected final PatientProf getPatientProfObjByIndex(int index) {  return this.getPatientProfList()[index];  }
 
-    // .....
-    public final boolean indexInPatientList(int index) {  return index >= 0 && index < this.getPatientProfList().length;  }
-
+    // return index of element object in patientList which has the matching adminID and last name
     protected final int getPatientProfArrIndex(String adminID, String name){ 
         for(int i=0; i<this.getPatientProfList().length; i++){  if (this.getPatientProfList()[i] != null && this.getPatientProfList()[i].getadminID().equals(adminID) && this.getPatientProfList()[i].getLastName().equals(name)) { return i; }  }
         return -1;
     }
-
+    
+    // Abstract methods
     protected abstract void writeAllPatientProf() throws IOException;
     protected abstract void initializeDatabase() throws ClassNotFoundException, IOException;
 

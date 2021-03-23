@@ -1,15 +1,20 @@
-////  Patient Profile Interface for admin users
-//      Interface will allow admin users (doctors, nurses, etc) to access profile data
+/*
+
+** PatientProfInterfaceAbstract (Patient Profile Interface abstract) **
+abstract class
+
+*/
+
+
 public abstract class PatientProfInterfaceAbstract {
-    //public abstract PatientProfInterfaceAbstract(String fileName);
-    public abstract void getUserChoice();
-    public abstract void deletePatientProf();
-    public abstract PatientProf findPatientProf();
-    public abstract void updatePatientProf();
-    public abstract void displayPatientProf();
-    public abstract void displayAllPatientProf();
-    public abstract void writeToDB();
-    public abstract void initDB();
-    public abstract void createNewPatientProf(PatientProf p);
-    public abstract void createNewMedCond(PatientProf p);
+    protected abstract void getUserChoice();
+    protected abstract void deletePatientProf();
+    protected abstract PatientProf findPatientProf();
+    protected abstract void updatePatientProf();
+    protected abstract void displayPatientProf();
+    protected abstract void displayAllPatientProf();
+    protected abstract void writeToDB();
+    protected abstract void initDB();
+    protected abstract void createNewPatientProf(PatientProf p);
+    protected abstract void createNewMedCond(PatientProf p);
 }
