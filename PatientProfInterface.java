@@ -344,8 +344,8 @@ public class PatientProfInterface extends PatientProfInterfaceAbstract{
 
             PatientProf p = this.db.findProfile(adminID, lastName);
 
-            if(p != null) {  this.displayPatientProf(p); return p;
-            } else {  System.out.println("FAILED - Unable to locate "+lastName+"'s patient profile");  }
+            if(p != null) { return p; }
+            else {  System.out.println("FAILED - Unable to locate "+lastName+"'s patient profile");  }
         }catch(NullPointerException npe){  System.out.println("SUCCESS - No profiles found, but no errors either");
         }catch(IOException e){  System.out.println("ERROR - I/O Error");
         }catch(Exception e){  this.miscExceptionMessage(e);
