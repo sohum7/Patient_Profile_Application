@@ -3,221 +3,184 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class CreateProfileGUI extends JFrame {
-    private static final long serialVersionUID = 1L;
-    /**
-     *
-     */
-    public static class createProfile{
-        MedCond mc = new MedCond("", "", "none", "none");
-        PatientProf p = new PatientProf("", "", "", "", "", 0, "Private", "Adult", mc);
+public class CreateProfileGUI {
+    JLabel adminid,fname,lname,addr,phone,copay,insutype,pattype;
+    JLabel mdcontact,mdphone,algtype,illtype;
 
-        public static void createPatientProf(JPanel cp){
-            final int fontSize = 16;
-            int deltaY = 20;
-            int y = 20;
-            int x = 10;
-            int xWidth = 100;
-            int yWidth = 30;
-            int txWidth = 100;
-            int tyWidth = 20;
-            int colSpace = 120;
-            String font = "Arial";
+    JTextField tadminid,tfname,tlname,taddr,tphone,tcopay;
+    JComboBox<String> tinsutype,tpattype;
+    JTextField tmdcontact,tmdphone;
+    JComboBox<String> talgtype,tilltype;
 
-            // CHECK THESE
-            String[] insuTypes = { "Private", "Government" };
-            String[] patTypes = { "Adult", "Senior", "Pediatric1234" };
-            
+    JButton backForm, submitForm;
 
-            JLabel adminid = new JLabel("Admin ID: ");
-            adminid.setFont(new Font(font, Font.PLAIN, fontSize));
-            //adminid.setSize(xWidth, yWidth);
-            //adminid.setLocation(x, y);
-            cp.add(adminid);
-            JTextField tadminid = new JTextField();
-            tadminid.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tadminid.setSize(txWidth, tyWidth);
-            //tadminid.setLocation(x+colSpace, y); y+=deltaY;
-            cp.add(tadminid);
+    final int fontSize = 16;
+    final String font = "Arial";
+    int deltaY = 20;
+    int y = 20;
+    int x = 10;
+    int xWidth = 100;
+    int yWidth = 30;
+    int txWidth = 100;
+    int tyWidth = 20;
+    int colSpace = 120;
 
-            JLabel fname = new JLabel("First name: ");
-            fname.setFont(new Font(font, Font.PLAIN, fontSize));
-            //fname.setSize(xWidth, yWidth);
-            //fname.setLocation(x, y);
-            cp.add(fname);
-            JTextField tfname = new JTextField();
-            tfname.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tfname.setSize(txWidth, tyWidth);
-            //tfname.setLocation(x+colSpace, y); y+=deltaY;
-            cp.add(tfname);
+    // CHECK THESE
+    final String[] algTypes = { "n/a" };
+    final String[] illTypes = { "n/a" };
 
-            JLabel lname = new JLabel("Last name: ");
-            lname.setFont(new Font(font, Font.PLAIN, fontSize));
-            //lname.setSize(xWidth, yWidth);
-            //lname.setLocation(x, y);
-            cp.add(lname);
-            JTextField tlname = new JTextField();
-            tlname.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tlname.setSize(txWidth, tyWidth);
-            //tlname.setLocation(x+colSpace, y); y+=deltaY;
-            cp.add(tlname);
+    // CHECK THESE
+    final String[] insuTypes = { "Private", "Government" };
+    final String[] patTypes = { "Adult", "Senior", "Pediatric1234" };
 
-            JLabel addr = new JLabel("Address: ");
-            addr.setFont(new Font(font, Font.PLAIN, fontSize));
-            //addr.setSize(xWidth, yWidth);
-            //addr.setLocation(x, y);
-            cp.add(addr);
-            JTextField taddr = new JTextField();
-            taddr.setFont(new Font(font, Font.PLAIN, fontSize));
-            //taddr.setSize(txWidth, tyWidth);
-            //taddr.setLocation(x+colSpace, y); y+=deltaY;
-            cp.add(taddr);
+    public CreateProfileGUI(){
+        // ...
+    }
 
-            JLabel phone = new JLabel("Phone: ");
-            phone.setFont(new Font(font, Font.PLAIN, fontSize));
-            //phone.setSize(xWidth, yWidth);
-            //phone.setLocation(x, y);
-            cp.add(phone);
-            JTextField tphone = new JTextField();
-            tphone.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tphone.setSize(txWidth, tyWidth);
-            //tphone.setLocation(x+colSpace, y); y+=deltaY;
-            cp.add(tphone);
+    /*
+    @Override
+    public boolean equals(Object o){
+        // self check
+        if (this == o){ return true; }
+        // null check
+        if (o == null){ return false; }
+        // type check and cast
+        if (this.getClass() != o.getClass()){ return false; }
 
-            JLabel copay = new JLabel("Copay: ");
-            copay.setFont(new Font(font, Font.PLAIN, fontSize));
-            //copay.setSize(xWidth, yWidth);
-            //copay.setLocation(x, y);
-            cp.add(copay);
-            JTextField tcopay = new JTextField();
-            tcopay.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tcopay.setSize(txWidth, tyWidth);
-            //tcopay.setLocation(x+colSpace, y); y+=deltaY;
-            cp.add(tcopay);
-
-            JLabel insutype = new JLabel("Insurance Type: ");
-            insutype.setFont(new Font(font, Font.PLAIN, fontSize));
-            //insutype.setSize(xWidth, yWidth);
-            //insutype.setLocation(x, y);
-            cp.add(insutype);
-            JComboBox tinsutype = new JComboBox(insuTypes);
-            tinsutype.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tinsutype.setSize(txWidth, tyWidth);
-            //tinsutype.setLocation(x+colSpace, y); y+=deltaY;
-            tinsutype.setSelectedIndex(0);
-            //tinsutype.addActionListener(this);
-            cp.add(tinsutype);
-
-            JLabel pattype = new JLabel("Patient Type: ");
-            pattype.setFont(new Font(font, Font.PLAIN, fontSize));
-            //pattype.setSize(xWidth, yWidth);
-            //pattype.setLocation(x, y);
-            cp.add(pattype);
-            JComboBox tpattype = new JComboBox(patTypes);
-            tpattype.setFont(new Font(font, Font.PLAIN, fontSize));
-            //tpattype.setSize(txWidth, tyWidth);
-            //tpattype.setLocation(x+colSpace, y); y+=deltaY;
-            tpattype.setSelectedIndex(0);
-            //tpattype.addActionListener(this);
-            cp.add(tpattype);
-
-
-        }
-        public static void createMedCond(JFrame cp){
-            final int fontSize = 12;
-            int deltaY = 20;
-            int y = 20;
-            int x = 10;
-            int xWidth = 100;
-            int yWidth = 30;
-
-            /*
-            JLabel mdContact = new JLabel("AdminID: ");
-            mdContact.setFont(new Font("Arial", Font.PLAIN, fontSize));
-            mdContact.setSize(xWidth, yWidth);
-            mdContact.setLocation(x, y+=deltaY);
-            cp.add(mdContact);
-
-            JLabel mdPhone = new JLabel("First name: ");
-            mdPhone.setFont(new Font("Arial", Font.PLAIN, fontSize));
-            mdPhone.setSize(xWidth, yWidth);
-            mdPhone.setLocation(x, y+=deltaY);
-            cp.add(mdPhone);
-
-            JLabel algType = new JLabel("Last name: ");
-            algType.setFont(new Font("Arial", Font.PLAIN, fontSize));
-            algType.setSize(xWidth, yWidth);
-            algType.setLocation(x, y+=deltaY);
-            cp.add(algType);
-
-            JLabel illType = new JLabel("Address: ");
-            illType.setFont(new Font("Arial", Font.PLAIN, fontSize));
-            illType.setSize(xWidth, yWidth);
-            illType.setLocation(x, y+=deltaY);
-            cp.add(illType);
-            */
-
-        }
-        public static void back(JPanel cp){
-            JButton backForm = new JButton("Back/Cancel");
-            backForm.setFont(new Font("Arial", Font.PLAIN, 15));
-            //submitForm.setSize(100, 20);
-            //submitForm.setLocation(100, 250);
-            //submitForm.addActionListener(this);
-            cp.add(backForm);
-        }
-        public static void submit(JPanel cp){
-            JButton submitForm = new JButton("Submit");
-            submitForm.setFont(new Font("Arial", Font.PLAIN, 15));
-            //submitForm.setSize(100, 20);
-            //submitForm.setLocation(100, 250);
-            //submitForm.addActionListener(this);
-            cp.add(submitForm);
-        }
-        public static void setDefaultLayout(){
-            // Set default parameters
-            JFrame cp  = new JFrame("Create Profile");
-            
-            /*
-            JLabel title = new JLabel("asdf");
-            title.setFont(new Font("Arial", Font.PLAIN, 15));
-            title.setHorizontalAlignment(JLabel.CENTER);
-            title.setVerticalAlignment(JLabel.CENTER);
-            cp.add(title);
-            */
-
-            JPanel p = new JPanel();
-            GridLayout layout = new GridLayout(0, 2, 2, 2);
-            p.setBorder(new EmptyBorder(15, 15, 15, 15));
-            p.setLayout(layout);
-            createPatientProf(p);
-            cp.add(p);
-            
-
-            //createPatientProf(cp);
-            //createMedCond(cp);
-            back(p);
-            submit(p);
-            
-            cp.setSize(300, 400);
-            //cp.setLayout(null);
-            cp.setVisible(true);
-            cp.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        }
-        public void changeLayout(){
-            // Clear any parameters
-
-        }
+        CreateProfileGUI o2 = (CreateProfileGUI) o;
+        JComboBox<String> tpattype;
+        JComboBox<String> talgtype,tilltype;
         
+        return this.tadminid==o2.tadminid && this.tfname==o2.tfname && this.tlname==o2.tlname && this.taddr==o2.taddr && this.tphone==o2.tphone && this.tcopay==o2.tcopay && this.tmdcontact==o2.tmdcontact && this.tmdphone==o2.tmdphone && this.tinsutype.getSelectedItem().toString()==o2.getSelectedItem().toString();
+    }
+    */
+    public void createPatientProf(JPanel cp){
+
+        this.adminid = new JLabel("Admin ID: ");
+        this.adminid.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.adminid);
+        tadminid = new JTextField();
+        this.tadminid.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tadminid);
+
+        this.fname = new JLabel("First name: ");
+        this.fname.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.fname);
+        this.tfname = new JTextField();
+        this.tfname.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tfname);
+
+        this.lname = new JLabel("Last name: ");
+        this.lname.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.lname);
+        this.tlname = new JTextField();
+        this.tlname.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tlname);
+
+        this.addr = new JLabel("Address: ");
+        this.addr.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.addr);
+        this.taddr = new JTextField();
+        this.taddr.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.taddr);
+
+        this.phone = new JLabel("Phone: ");
+        this.phone.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.phone);
+        this.tphone = new JTextField();
+        this.tphone.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tphone);
+
+        this.copay = new JLabel("Copay: ");
+        this.copay.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.copay);
+        this.tcopay = new JTextField();
+        this.tcopay.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tcopay);
+
+        this.insutype = new JLabel("Insurance Type: ");
+        this.insutype.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.insutype);
+        this.tinsutype = new JComboBox(insuTypes);
+        this.tinsutype.setFont(new Font(font, Font.PLAIN, fontSize));
+        this.tinsutype.setSelectedIndex(0);
+        //tinsutype.addActionListener(this);
+        cp.add(this.tinsutype);
+
+        this.pattype = new JLabel("Patient Type: ");
+        this.pattype.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.pattype);
+        this.tpattype = new JComboBox(patTypes);
+        this.tpattype.setFont(new Font(font, Font.PLAIN, fontSize));
+        this.tpattype.setSelectedIndex(0);
+        //this.tpattype.addActionListener(this);
+        cp.add(this.tpattype);
+
 
     }
-    public class cpActionListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            // Action to be performed once event has occurred
+    public void createMedCond(JPanel cp){
 
-        }
+        this.mdcontact = new JLabel("Medical Contact: ");
+        this.mdcontact.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.mdcontact);
+        this.tmdcontact = new JTextField();
+        this.tmdcontact.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tmdcontact);
+
+        this.mdphone = new JLabel("Medical Phone: ");
+        this.mdphone.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.mdphone);
+        this.tmdphone = new JTextField();
+        this.tmdphone.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.tmdphone);
+
+        this.algtype = new JLabel("Allergy Type: ");
+        this.algtype.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.algtype);
+        this.talgtype = new JComboBox(this.algTypes);
+        this.talgtype.setFont(new Font(font, Font.PLAIN, fontSize));
+        this.talgtype.setSelectedIndex(0);
+        //this.talgtype.addActionListener(this);
+        cp.add(this.talgtype);
+
+        this.illtype = new JLabel("Illness Type: ");
+        this.illtype.setFont(new Font(font, Font.PLAIN, fontSize));
+        cp.add(this.illtype);
+        this.tilltype = new JComboBox(this.illTypes);
+        this.tilltype.setFont(new Font(font, Font.PLAIN, fontSize));
+        this.tilltype.setSelectedIndex(0);
+        //this.tilltype.addActionListener(this);
+        cp.add(this.tilltype);
+        
     }
-    public static void main(String[] args){
-        createProfile.setDefaultLayout();
+
+    
+    public void setDefaultLayout(JFrame cp, JPanel p){
+        // Set default parameters
+        cp.setTitle("Create Profile");
+        p.setBorder(new EmptyBorder(15, 15, 15, 15));
+
+        /*
+        JLabel title = new JLabel("asdf");
+        title.setFont(new Font("Arial", Font.PLAIN, 15));
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setVerticalAlignment(JLabel.CENTER);
+        cp.add(title);
+        */
+
+        GridLayout layout = new GridLayout(0, 2, 2, 2);
+        p.setLayout(layout);
+
+        createPatientProf(p);
+        createMedCond(p);
+    }
+    public PatientProf createPatientProf(){
+        return new PatientProf(this.tadminid.getText(), this.tfname.getText(), this.tlname.getText(), this.taddr.getText(),
+        this.tphone.getText(), Float.parseFloat(this.tcopay.getText()), this.insuTypes[this.tinsutype.getSelectedIndex()], this.patTypes[this.tpattype.getSelectedIndex()],
+        new MedCond(this.tmdcontact.getText(), this.tmdphone.getText(), this.algTypes[this.talgtype.getSelectedIndex()], this.illTypes[this.tilltype.getSelectedIndex()]) );
+    }
+    public void clearFields(){
+        // Clear any parameters
+
     }
 }
