@@ -116,7 +116,6 @@ public class CreateProfileGUI {
         //this.tpattype.addActionListener(this);
         cp.add(this.tpattype);
 
-
     }
     public void createMedCond(JPanel cp){
 
@@ -174,7 +173,7 @@ public class CreateProfileGUI {
         createPatientProf(p);
         createMedCond(p);
     }
-    public PatientProf createPatientProf(){
+    public PatientProf createPatientProfile(){
         return new PatientProf(this.tadminid.getText(), this.tfname.getText(), this.tlname.getText(), this.taddr.getText(),
         this.tphone.getText(), Float.parseFloat(this.tcopay.getText()), this.insuTypes[this.tinsutype.getSelectedIndex()], this.patTypes[this.tpattype.getSelectedIndex()],
         new MedCond(this.tmdcontact.getText(), this.tmdphone.getText(), this.algTypes[this.talgtype.getSelectedIndex()], this.illTypes[this.tilltype.getSelectedIndex()]) );

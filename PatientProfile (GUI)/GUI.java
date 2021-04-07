@@ -10,9 +10,9 @@ public class GUI{
     JPanel p;
     MainMenuGUI mmg;
     CreateProfileGUI cpg       = new CreateProfileGUI();
-    //RemoveProfileGUI dpg       = new RemoveProfileGUI();
+    //RemoveProfileGUI rpg       = new RemoveProfileGUI();
     //UpdateProfileGUI upg       = new UpdateProfileGUI();
-    //DisplayProfileGUI dpg      = new DisplayProfileGUI();
+    DisplayProfileGUI dpg      = new DisplayProfileGUI();
     //DisplayAllProfilesGUI dapg = new DisplayAllProfilesGUI();
     static states STATE = null;
     static enum states { MM, CP, RP, UP, DP, DAP,
@@ -68,6 +68,40 @@ public class GUI{
     public void createProfileSubmit(PatientProf pat){
         if(this.db.insertNewProfile(pat)){
             // Success - Display some success dialog box
+            JOptionPane.showMessageDialog(new JFrame(), "Successfully created profile");
+        } else {
+            // Error - Display some error dialog box
+            JOptionPane.showMessageDialog(new JFrame(), "Unable to create profile");
+        }
+    }
+    public void displayProfile(){
+        this.f.remove(this.p);
+        this.p = new JPanel();
+
+        this.dpg.setDefaultLayout(f, p);
+        this.dpg.getAccountInfo(p);
+        dpSubmit(this, this.f, this.p);
+        this.f.setContentPane(this.p);
+        this.f.setSize(300, 400);
+        this.f.setVisible(true);
+
+        this.f.revalidate();
+        this.f.repaint();
+    }
+    public void displayProfileSubmit(PatientProf pat){
+        if(pat != null){
+            // Success - Display some success dialog box
+            this.f.remove(this.p);
+            this.p = new JPanel();
+
+            this.dpg.displayProfile(p, pat);
+            //dpSubmit(this, this.f, this.p);
+            this.f.setContentPane(this.p);
+            this.f.setSize(300, 400);
+            this.f.setVisible(true);
+
+            this.f.revalidate();
+            this.f.repaint();
         } else {
             // Error - Display some error dialog box
         }
@@ -91,6 +125,24 @@ public class GUI{
         });
         p.add(backForm);
     }
+    public static void dpSubmit(GUI g, JFrame f, JPanel p){
+        JButton submitForm = new JButton("Submit");
+        submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
+        submitForm.setHorizontalAlignment(JLabel.CENTER);
+        submitForm.setVerticalAlignment(JLabel.CENTER);
+        submitForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                // some db function
+                PatientProf pat;
+                try{ pat = g.db.findProfile(g.dpg.tadminid.getText(), g.dpg.tlname.getText()); }
+                catch(Exception e2){ pat = null; }
+                g.displayProfileSubmit(pat);
+            }
+        });
+        p.add(submitForm);
+    }
     public static void cpSubmit(GUI g, JFrame f, JPanel p){
         JButton submitForm = new JButton("Submit");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -101,7 +153,8 @@ public class GUI{
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
                 // some db function
-                g.createProfileSubmit(g.cpg.createPatientProf());
+                g.createProfileSubmit(g.cpg.createPatientProfile());
+                JOptionPane.showMessageDialog(new JFrame(), "Here");
             }
         });
         p.add(submitForm);
@@ -119,13 +172,13 @@ public class GUI{
                 if(g.mmg.cp.isSelected()){
                     g.createProfile();
                 } else if(g.mmg.rp.isSelected()){
-                    //removeProfile(f, p, (RemoveProfileGUI) funcList[2]);
+                    //g.removeProfile();
                 } else if(g.mmg.up.isSelected()){
-                    //updateProfile(f, p, (UpdateProfileGUI) funcList[3]);
+                    //g.updateProfile();
                 } else if(g.mmg.dp.isSelected()){
-                    //displayProfile(f, p, (displayProfileGUI) funcList[4]);
+                    g.displayProfile();
                 } else if(g.mmg.dap.isSelected()){
-                    //displayAllProfiles(f, p, (displayAllProfilesGUI) funcList[5]);
+                    //g.displayAllProfiles();
                 }
                 
             }
