@@ -110,7 +110,7 @@ public class GUI{
             setFrame(this.f);
         } else {
             // Error - Display some error dialog box
-            displayProfileError();
+            displayProfileError(0);
             //backToMain(this, this.f, this.p);
         }
     }
@@ -156,7 +156,11 @@ public class GUI{
             this.f.setVisible(true);
             setFrame(this.f);
         } else {
-            displayProfileError();
+            if(first){ displayProfileError(0); }
+            else{
+                displayProfileError(1);
+                this.mainMenu();
+            }
         }
     }
     /*
@@ -181,7 +185,12 @@ public class GUI{
 
     }
     */
-    public static void displayProfileError(){ JOptionPane.showMessageDialog(new JFrame(), "Unable to locate Patient Profile"); }
+    public static void displayProfileError(int type){
+        String toPrint = "Error";
+        if(type == 0){ toPrint = "Unable to locate Patient Profile"; }
+        else if(type == 1) { toPrint = "No more profiles for current Admin user"; }
+        JOptionPane.showMessageDialog(new JFrame(), toPrint);
+    }
     public static void setFrame(JFrame f){
         //f.removeAll();
         f.revalidate();
