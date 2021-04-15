@@ -49,8 +49,7 @@ public class GUI{
         this.f.setSize(300, 400);
         this.f.setVisible(true);
 
-        this.f.revalidate();
-        this.f.repaint();
+        setFrame(this.f);
     }
     public void createProfile(){
         this.f.remove(this.p);
@@ -62,13 +61,14 @@ public class GUI{
         this.f.setSize(300, 400);
         this.f.setVisible(true);
 
-        this.f.revalidate();
-        this.f.repaint();
+        setFrame(this.f);
     }
     public void createProfileSubmit(PatientProf pat){
         if(this.db.insertNewProfile(pat)){
             // Success - Display some success dialog box
             JOptionPane.showMessageDialog(new JFrame(), "Successfully created profile");
+            try { this.db.writeAllPatientProf(); }
+            catch (IOException e) { JOptionPane.showMessageDialog(new JFrame(), "Database error"); }
         } else {
             // Error - Display some error dialog box
             JOptionPane.showMessageDialog(new JFrame(), "Unable to create profile");
@@ -78,37 +78,42 @@ public class GUI{
         this.f.remove(this.p);
         this.p = new JPanel();
 
-        this.dpg.setDefaultLayout(f, p);
+        this.dpg.setDefaultLayout(this.f, this.p);
         this.dpg.getAccountInfo(p);
         dpSubmit(this, this.f, this.p);
         this.f.setContentPane(this.p);
         this.f.setSize(300, 400);
         this.f.setVisible(true);
 
-        this.f.revalidate();
-        this.f.repaint();
+        setFrame(this.f);
     }
-    public void displayProfileSubmit(PatientProf pat){
+    public void displayProfileSubmit(){
+        PatientProf pat = null;
+
+        try{ pat = this.db.findProfile(this.dpg.tadminid.getText(), this.dpg.tlname.getText()); }
+        catch(Exception e2){ /*  */ }
+
         if(pat != null){
             // Success - Display some success dialog box
             this.f.remove(this.p);
             this.p = new JPanel();
+            this.dpg.setDefaultLayout(this.f, this.p);
 
             this.dpg.displayProfile(p, pat);
-            //dpSubmit(this, this.f, this.p);
+            backToMain(this, this.f, this.p);
             this.f.setContentPane(this.p);
             this.f.setSize(300, 400);
             this.f.setVisible(true);
 
-            this.f.revalidate();
-            this.f.repaint();
+            setFrame(this.f);
         } else {
             // Error - Display some error dialog box
+            JOptionPane.showMessageDialog(new JFrame(), "Unable to locate Patient Profile");
+            //backToMain(this, this.f, this.p);
         }
     }
-
-    public static void clearFrame(JFrame f){
-        f.removeAll();
+    public static void setFrame(JFrame f){
+        //f.removeAll();
         f.revalidate();
         f.repaint();
     }
@@ -119,9 +124,7 @@ public class GUI{
         backForm.setVerticalAlignment(JLabel.CENTER);
         backForm.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                g.mainMenu();
-            }
+            public void actionPerformed(ActionEvent e) { g.mainMenu(); }
         });
         p.add(backForm);
     }
@@ -132,14 +135,7 @@ public class GUI{
         submitForm.setVerticalAlignment(JLabel.CENTER);
         submitForm.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                // some db function
-                PatientProf pat;
-                try{ pat = g.db.findProfile(g.dpg.tadminid.getText(), g.dpg.tlname.getText()); }
-                catch(Exception e2){ pat = null; }
-                g.displayProfileSubmit(pat);
-            }
+            public void actionPerformed(ActionEvent e) { g.displayProfileSubmit(); }
         });
         p.add(submitForm);
     }
@@ -150,12 +146,7 @@ public class GUI{
         submitForm.setVerticalAlignment(JLabel.CENTER);
         submitForm.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                // some db function
-                g.createProfileSubmit(g.cpg.createPatientProfile());
-                JOptionPane.showMessageDialog(new JFrame(), "Here");
-            }
+            public void actionPerformed(ActionEvent e) { g.createProfileSubmit(g.cpg.createPatientProfile()); }
         });
         p.add(submitForm);
     }
@@ -167,8 +158,6 @@ public class GUI{
         select.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                // some db function
                 if(g.mmg.cp.isSelected()){
                     g.createProfile();
                 } else if(g.mmg.rp.isSelected()){
@@ -186,23 +175,18 @@ public class GUI{
         p.add(select);
     }
 
-    public void actionPerformed(ActionEvent e){
-        // Action to be performed once event has occurred
-
-    }
+    public void actionPerformed(ActionEvent e){ /* Action to be performed once event has occurred */ }
     
     public static void main(String[] args){
 
         STATE = states.MM;
-        
-        //while(true){
-            try{
-                GUI ips = new GUI();
-                ips.mainMenu();
 
-            }catch(Exception e){
+        try{
+            GUI ips = new GUI();
+            ips.mainMenu();
 
-            }
-        //}
+        }catch(Exception e){
+
+        }
     }
 }

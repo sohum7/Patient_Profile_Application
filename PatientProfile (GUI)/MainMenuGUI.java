@@ -21,8 +21,8 @@ public class MainMenuGUI {
         this.cp = new JRadioButton("Create Profile");
         this.rp = new JRadioButton("Remove Profile");
         this.up = new JRadioButton("Update Profile");
-        this.dp = new JRadioButton("Delete Profile");
-        this.dap = new JRadioButton("Delete All Profiles");
+        this.dp = new JRadioButton("Display Profile");
+        this.dap = new JRadioButton("Display All Profiles");
 
         this.bg = new ButtonGroup();
         this.bg.add(this.cp); this.bg.add(this.rp); this.bg.add(this.up); this.bg.add(this.dp); this.bg.add(this.dap);

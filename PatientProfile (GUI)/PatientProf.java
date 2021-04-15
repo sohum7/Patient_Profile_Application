@@ -16,6 +16,9 @@ public class PatientProf implements Serializable{
     private String insuType;
     private String patientType;
     private MedCond medCondInfo = new MedCond("", "", "none", "none");
+
+    private static String[] insuTypes = { "Private", "Government" };
+    private static String[] patTypes = { "Adult", "Senior", "Pediatric" };
     //arguments ^^^^^^^^^^^^^^^^
 
     //Constructor vvvvvvvvvvvvv
@@ -41,8 +44,15 @@ public class PatientProf implements Serializable{
         this.updatePatientType(p.getPatientType());
         this.updateMedCondInfo(p.getMedCondInfo());
     }
+    //Constructor ^^^^^^^^^^^^^^^^^^
 
-    //Constructor ^^^^^^^^^^^^^^^^^^^
+    // get types
+    public static String[] getInsuTypes(){
+        return insuTypes;
+    }
+    public static String[] getPatTypes(){
+        return patTypes;
+    }
 
     //get methods, they print and return their respective values vvvvvvvvvvvvv
     public String getadminID(){
@@ -90,20 +100,20 @@ public class PatientProf implements Serializable{
     public void updatePhone(String n){
         this.phone = n;
     }
-    private boolean checkInsuType(String Insutype) {
-        if(Insutype.equalsIgnoreCase("Private") || Insutype.equalsIgnoreCase("Government")) { return true; }
+    private static boolean checkInsuType(String Insutype) {
+        for(String insutype : getInsuTypes()) { if(Insutype.equalsIgnoreCase(insutype)) { return true; } }
         return false;
     }
-    private boolean checkPatientType(String Patienttype) {
-        if(Patienttype.equalsIgnoreCase("Senior") || Patienttype.equalsIgnoreCase("Pediatric") || Patienttype.equalsIgnoreCase("Adult")) { return true; }
+    private static boolean checkPatientType(String Patienttype) {
+        for(String pattype : getPatTypes()) { if(Patienttype.equalsIgnoreCase(pattype)) { return true; } }
         return false;
     }
     public void updateInsuType(String n) throws IllegalArgumentException { 
-        if(this.checkInsuType(n)) { this.insuType = n; }
+        if(checkInsuType(n)) { this.insuType = n; }
         else { throw new IllegalArgumentException(); }
     }
     public void updatePatientType(String n) throws IllegalArgumentException {
-        if(this.checkPatientType(n)) { this.patientType = n; }
+        if(checkPatientType(n)) { this.patientType = n; }
         else { throw new IllegalArgumentException(); }
     }
     public void updateMedCondInfo(MedCond n){

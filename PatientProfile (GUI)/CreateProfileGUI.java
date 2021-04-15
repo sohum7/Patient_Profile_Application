@@ -101,7 +101,7 @@ public class CreateProfileGUI {
         this.insutype = new JLabel("Insurance Type: ");
         this.insutype.setFont(new Font(font, Font.PLAIN, fontSize));
         cp.add(this.insutype);
-        this.tinsutype = new JComboBox(insuTypes);
+        this.tinsutype = new JComboBox(PatientProf.getInsuTypes());
         this.tinsutype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tinsutype.setSelectedIndex(0);
         //tinsutype.addActionListener(this);
@@ -110,7 +110,7 @@ public class CreateProfileGUI {
         this.pattype = new JLabel("Patient Type: ");
         this.pattype.setFont(new Font(font, Font.PLAIN, fontSize));
         cp.add(this.pattype);
-        this.tpattype = new JComboBox(patTypes);
+        this.tpattype = new JComboBox(PatientProf.getPatTypes());
         this.tpattype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tpattype.setSelectedIndex(0);
         //this.tpattype.addActionListener(this);
@@ -136,7 +136,7 @@ public class CreateProfileGUI {
         this.algtype = new JLabel("Allergy Type: ");
         this.algtype.setFont(new Font(font, Font.PLAIN, fontSize));
         cp.add(this.algtype);
-        this.talgtype = new JComboBox(this.algTypes);
+        this.talgtype = new JComboBox(MedCond.getAlgTypes());
         this.talgtype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.talgtype.setSelectedIndex(0);
         //this.talgtype.addActionListener(this);
@@ -145,7 +145,7 @@ public class CreateProfileGUI {
         this.illtype = new JLabel("Illness Type: ");
         this.illtype.setFont(new Font(font, Font.PLAIN, fontSize));
         cp.add(this.illtype);
-        this.tilltype = new JComboBox(this.illTypes);
+        this.tilltype = new JComboBox(MedCond.getIllTypes());
         this.tilltype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tilltype.setSelectedIndex(0);
         //this.tilltype.addActionListener(this);
@@ -175,8 +175,8 @@ public class CreateProfileGUI {
     }
     public PatientProf createPatientProfile(){
         return new PatientProf(this.tadminid.getText(), this.tfname.getText(), this.tlname.getText(), this.taddr.getText(),
-        this.tphone.getText(), Float.parseFloat(this.tcopay.getText()), this.insuTypes[this.tinsutype.getSelectedIndex()], this.patTypes[this.tpattype.getSelectedIndex()],
-        new MedCond(this.tmdcontact.getText(), this.tmdphone.getText(), this.algTypes[this.talgtype.getSelectedIndex()], this.illTypes[this.tilltype.getSelectedIndex()]) );
+        this.tphone.getText(), Float.parseFloat(this.tcopay.getText()), (String) this.tinsutype.getSelectedItem(), (String) this.tpattype.getSelectedItem(),
+        new MedCond(this.tmdcontact.getText(), this.tmdphone.getText(), (String) this.talgtype.getSelectedItem(), (String) this.tilltype.getSelectedItem()) );
     }
     public void clearFields(){
         // Clear any parameters

@@ -10,6 +10,9 @@ public class MedCond implements Serializable {
     private String mdPhone;
     private String algType;
     private String illType;
+
+    private static String[] algTypes = { "none", "CHD", "diabetes", "asthma", "other" };
+    private static String[] illTypes = { "none", "food", "medication", "other" };
     // arguments ^^^^^
 
     //constructor vvvv
@@ -21,6 +24,14 @@ public class MedCond implements Serializable {
         }
 
     //constructor ^^^^^^^
+
+    //other get methods
+    public static String[] getAlgTypes(){
+        return algTypes;
+    }
+    public static String[] getIllTypes(){
+        return illTypes;
+    }
 
     //get methods, they print the info required, and return them vvvvvvvvvvvvvv
     public String getmdContact(){
@@ -44,20 +55,20 @@ public class MedCond implements Serializable {
     public void updatemdPhone(String n){
         this.mdPhone = n;
     }
-    private boolean checkIllType(String Illtype){
-        if(Illtype.equalsIgnoreCase("none") || Illtype.equalsIgnoreCase("CHD") || Illtype.equalsIgnoreCase("diabetes") || Illtype.equalsIgnoreCase("asthma") || Illtype.equalsIgnoreCase("other")) { return true; }
+    private static boolean checkIllType(String Illtype){
+        for(String illtype : getIllTypes()) { if(Illtype.equalsIgnoreCase(illtype)) { return true; } }
         return false;
     }
-    private boolean checkAlgType(String Algtype){
-        if(Algtype.equalsIgnoreCase("none") || Algtype.equalsIgnoreCase("food") || Algtype.equalsIgnoreCase("medication") || Algtype.equalsIgnoreCase("other")) { return true; }
+    private static boolean checkAlgType(String Algtype){
+        for(String algtype : getAlgTypes()) { if(Algtype.equalsIgnoreCase(algtype)) { return true; } }
         return false;
     }
     public void updateAlgType(String n) throws IllegalArgumentException {
-        if(this.checkAlgType(n)) { this.algType = n; }
+        if(checkAlgType(n)) { this.algType = n; }
         else { throw new IllegalArgumentException(); }
     }
     public void updateIllType(String n) throws IllegalArgumentException {
-        if(this.checkIllType(n)) { this.illType = n; }
+        if(checkIllType(n)) { this.illType = n; }
         else { throw new IllegalArgumentException(); }
     }
     //update methods, they update their respective arguments  ^^^^^^^^^^^^^^^^^^^^^
