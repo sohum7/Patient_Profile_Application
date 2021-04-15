@@ -89,7 +89,7 @@ public class DisplayProfileGUI {
         tpattype.setFont(new Font(font, Font.PLAIN, fontSize));
         p.add(tpattype);
     }
-    public void setDefaultLayout(JFrame cp, JPanel p){
+    public static void setDefaultLayout(JFrame cp, JPanel p){
         // Set default parameters
         cp.setTitle("Display Profile");
         p.setBorder(new EmptyBorder(15, 15, 15, 15));

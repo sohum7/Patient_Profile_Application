@@ -32,10 +32,12 @@ public class PatientProfDB extends PatientProfDBAbstract {
     // Basic patient information variables
     //      number of patients
     //      currently working with patient index value for within PatientProf array
+    //      currently working with adminID
     // File which will replace a database for data management/storage
     
     private int numPatient;
     private int currentProfileIndex;
+    private String currentAdminID;
 
     // PatientProfDB constructor
     // Accepts a filename
@@ -71,7 +73,7 @@ public class PatientProfDB extends PatientProfDBAbstract {
     // Find and return profile by adminID and last name (unique)
     protected PatientProf findProfile(String adminID, String name) throws Exception {
         if(this.numPatient == 0) {  throw new Exception("No patient profiles in system");  }
-        int indexProfile = this.currentProfileIndex = this.getPatientProfArrIndex(adminID, name);
+        int indexProfile = this.getPatientProfArrIndex(adminID, name);
         if(indexProfile >= 0) {  return this.getPatientProfObjByIndex(indexProfile);  }
 
         return null;
@@ -86,6 +88,7 @@ public class PatientProfDB extends PatientProfDBAbstract {
         return adminIDPatients;
     }
 
+    /*
     // Find and return first profile in database file
     protected PatientProf findFirstProfile() throws Exception {
         this.currentProfileIndex = 0;
@@ -98,13 +101,35 @@ public class PatientProfDB extends PatientProfDBAbstract {
         else if(++this.currentProfileIndex < this.getPatientProfList().length) {  return this.getPatientProfObjByIndex(this.currentProfileIndex);  }
         else {  return this.findFirstProfile();  }
     }
+    */
+
+    // ...
+    protected PatientProf findFirstProfile(String admin) {
+        this.currentAdminID = admin;
+        this.currentProfileIndex = this.getNextAdminidProf(admin, 0);
+        if(this.currentProfileIndex != -1){ return this.getPatientProfList()[this.currentProfileIndex]; }
+        
+        this.currentAdminID = null;
+        return null;
+    }
+    // ...
+    protected PatientProf findNextProfile() {
+        if(this.currentAdminID == null){ return null; }
+        this.currentProfileIndex = this.getNextAdminidProf(this.currentAdminID, this.currentProfileIndex+1);
+        if(this.currentProfileIndex != -1){ return this.getPatientProfList()[this.currentProfileIndex]; }
+
+        this.currentAdminID = null;
+        return null;
+    }
+    public int getCurProfIndex(){ return this.currentProfileIndex; }
+
 
     // Insert patient profile into patientList
     // If input profile matches another profile, in terms of adminID and lastName, in patientList
     // Then the profile will not be added
     protected boolean insertNewProfile(PatientProf profile) {
         int resIndex = this.getPatientProfArrIndex(profile.getadminID(), profile.getLastName());
-        if(resIndex == -1) { this.patientList = addObjElement(this.patientList, profile); this.updateNumPatient(); this.currentProfileIndex = this.numPatient-1; }
+        if(resIndex == -1) { this.patientList = addObjElement(this.patientList, profile); this.updateNumPatient(); }
         return resIndex == -1;
     }
     // Delete profile, in terms of adminID and lastName, if one exists

@@ -25,14 +25,6 @@ public class CreateProfileGUI {
     int tyWidth = 20;
     int colSpace = 120;
 
-    // CHECK THESE
-    final String[] algTypes = { "n/a" };
-    final String[] illTypes = { "n/a" };
-
-    // CHECK THESE
-    final String[] insuTypes = { "Private", "Government" };
-    final String[] patTypes = { "Adult", "Senior", "Pediatric1234" };
-
     public CreateProfileGUI(){
         // ...
     }

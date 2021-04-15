@@ -34,6 +34,12 @@ public abstract class PatientProfDBAbstract {
         for(int i=0; i<this.getPatientProfList().length; i++){  if (this.getPatientProfList()[i] != null && this.getPatientProfList()[i].getadminID().equals(adminID) && this.getPatientProfList()[i].getLastName().equals(name)) { return i; }  }
         return -1;
     }
+
+    // return index of first profile that matches the adminID on or after the currentIndex in patientList
+    protected final int getNextAdminidProf(String adminID, int startIndex){
+        for(int i=startIndex; i<this.getPatientProfList().length; i++){  if (this.getPatientProfList()[i] != null && this.getPatientProfList()[i].getadminID().equals(adminID)) { return i; }  }
+        return -1;
+    }
     
     // Abstract methods
     protected abstract void writeAllPatientProf() throws IOException;
