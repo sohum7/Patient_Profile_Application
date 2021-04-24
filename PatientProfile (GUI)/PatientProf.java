@@ -116,6 +116,18 @@ public class PatientProf implements Serializable{
         if(checkPatientType(n)) { this.patientType = n; }
         else { throw new IllegalArgumentException(); }
     }
+    public void PupdatemdContact(String n){
+        this.medCondInfo.updatemdContact(n);
+    }
+    public void PupdatemdPhone(String n){
+        this.medCondInfo.updatemdPhone(n);
+    }
+    public void PupdatemdAlgType(String n){
+        this.medCondInfo.updateAlgType(n);
+    }
+    public void PupdatemdIllType(String n){
+        this.medCondInfo.updateIllType(n);
+    }
     public void updateMedCondInfo(MedCond n){
         this.medCondInfo.updatemdContact(n.getmdContact());
         this.medCondInfo.updatemdPhone(n.getmdPhone());

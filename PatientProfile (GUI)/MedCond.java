@@ -11,8 +11,8 @@ public class MedCond implements Serializable {
     private String algType;
     private String illType;
 
-    private static String[] algTypes = { "none", "CHD", "diabetes", "asthma", "other" };
-    private static String[] illTypes = { "none", "food", "medication", "other" };
+    private static String[] algTypes = { "none", "food", "medication", "other" };
+    private static String[] illTypes = { "none", "CHD", "diabetes", "asthma", "other" };
     // arguments ^^^^^
 
     //constructor vvvv

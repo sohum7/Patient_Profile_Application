@@ -10,8 +10,8 @@ public class GUI{
     JPanel p;
     MainMenuGUI mmg;
     CreateProfileGUI cpg       = new CreateProfileGUI();
-    //RemoveProfileGUI rpg;
-    //UpdateProfileGUI upg;
+    RemoveProfileGUI rpg;
+    UpdateProfileGUI upg;
     DisplayProfileGUI dpg;
     DisplayAllProfilesGUI dapg;
     static states STATE = null;
@@ -33,8 +33,8 @@ public class GUI{
 
         this.mmg            = new MainMenuGUI();
         this.cpg       = new CreateProfileGUI();
-        //this.dpg       = new RemoveProfileGUI();
-        //this.upg       = new UpdateProfileGUI();
+        this.rpg       = new RemoveProfileGUI();
+        this.upg       = new UpdateProfileGUI();
         this.dpg      = new DisplayProfileGUI();
         this.dapg = new DisplayAllProfilesGUI();
     }
@@ -57,6 +57,7 @@ public class GUI{
 
         this.cpg.setDefaultLayout(f, p);
         cpSubmit(this, this.f, this.p);
+        backToMain(this, this.f, this.p);
         this.f.setContentPane(this.p);
         this.f.setSize(300, 400);
         this.f.setVisible(true);
@@ -82,6 +83,7 @@ public class GUI{
         
         this.dpg.getAccountInfo(p);
         dpSubmit(this, this.f, this.p, 0);
+        backToMain(this, this.f, this.p);
 
         this.f.setContentPane(this.p);
         this.f.setSize(300, 400);
@@ -89,6 +91,7 @@ public class GUI{
 
         setFrame(this.f);
     }
+
     public void displayProfileSubmit(){
         PatientProf pat = null;
 
@@ -114,6 +117,109 @@ public class GUI{
             //backToMain(this, this.f, this.p);
         }
     }
+    public void removeProfile(){
+        this.f.remove(this.p);
+        this.p = new JPanel();
+        RemoveProfileGUI.setDefaultLayout(this.f, this.p);
+
+        this.rpg.getAccountInfo(p);
+        rpProfileSubmit(this, this.f, this.p);
+        backToMain(this, this.f, this.p);
+
+        this.f.setContentPane(this.p);
+        this.f.setSize(300, 400);
+        this.f.setVisible(true);
+
+        setFrame(this.f);
+    }
+
+    public void rpProfileSubmit(GUI g, JFrame f, JPanel p){
+        JButton submitForm = new JButton("Submit");
+        submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
+        submitForm.setHorizontalAlignment(JLabel.CENTER);
+        submitForm.setVerticalAlignment(JLabel.CENTER);
+        submitForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println(g.rpg.adminid.getText());
+                //System.out.println(g.rpg.lname.getText());
+                if(g.db.deleteProfile(g.rpg.tadminid.getText(), g.rpg.tlname.getText())){
+                    JOptionPane.showMessageDialog(new JFrame(), "Successfully removed profile");
+
+                    g.mainMenu();
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JFrame(), "ERROR: Could not remove profile");
+
+                    g.mainMenu();
+                }
+            }
+        });
+        p.add(submitForm);
+    }
+    public void updateProfileSubmit(){
+        PatientProf pat = null;
+
+        try{ pat = this.db.findProfile(this.upg.tadminid.getText(), this.upg.tlname.getText());
+        } catch(Exception e2){
+
+        }
+        if(pat != null){
+            //System.out.println("What?");
+            this.f.remove(this.p);
+            this.p = new JPanel();
+
+            this.upg.setDefaultLayout(this.f, this.p);
+            this.upg.updateProfile(this.p,pat, (String)this.upg.fieldb.getSelectedItem(),this.upg.tadminid.getText(), this.upg.tlname.getText());
+            updateFieldSubmit(this, this.f, this.p, pat,(String)this.upg.fieldb.getSelectedItem(), this.upg);
+            backToMain(this, this.f, this.p);
+            this.f.setContentPane(this.p);
+            this.f.setSize(300, 400);
+            this.f.setVisible(true);
+
+        }
+        else{
+            displayProfileError(0);
+        }
+    }
+    public void updateFieldSubmit(GUI g, JFrame f, JPanel p, PatientProf pat, String toChange, UpdateProfileGUI u){
+        JButton submitForm = new JButton("Update");
+        submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
+        submitForm.setHorizontalAlignment(JLabel.CENTER);
+        submitForm.setVerticalAlignment(JLabel.CENTER);
+        submitForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(toChange.equals("Insurance Type") ||toChange.equals("Patient Type") || toChange.equals("Allergy Type") || toChange.equals("Illness Type")){
+                    if(UpdateProfileGUI.actuallyUpdate(pat, toChange, (String)g.upg.changebox.getSelectedItem())){
+                        // Success - Display some success dialog box
+                        JOptionPane.showMessageDialog(new JFrame(), "Successfully updated profile");
+
+                        g.mainMenu();
+                    }
+                    else{
+                        // Error - Display some error dialog box
+                        JOptionPane.showMessageDialog(new JFrame(), "Unable to update profile");
+                    }
+                }
+                else{
+                    if(g.upg.actuallyUpdate(pat, toChange, g.upg.tfield.getText())){
+                        // Success - Display some success dialog box
+                        JOptionPane.showMessageDialog(new JFrame(), "Successfully updated profile");
+
+                        g.mainMenu();
+                    }
+                    else {
+                        // Error - Display some error dialog box
+                        JOptionPane.showMessageDialog(new JFrame(), "Unable to update profile");
+                    }
+                }
+            }
+        });
+        p.add(submitForm);
+
+
+    }
     public void displayAllProfiles(){
         // obtain user info
         // add submit button
@@ -123,11 +229,28 @@ public class GUI{
         
         this.dapg.getAccountInfo(this.p);
         dpSubmit(this, this.f, this.p, 1);
+        backToMain(this, this.f, this.p);
 
         this.f.setContentPane(this.p);
         this.f.setSize(300, 400);
         this.f.setVisible(true);
         setFrame(this.f);
+
+    }
+    public void updateProfile(){
+        this.f.remove(this.p);
+        this.p = new JPanel();
+
+        this.upg.setDefaultLayout(this.f, this.p);
+        this.upg.whichProfile(this.p);
+        upSubmit(this, this.f, this.p);
+        backToMain(this, this.f, this.p);
+
+        this.f.setContentPane(this.p);
+        this.f.setSize(300, 400);
+        this.f.setVisible(true);
+        setFrame(this.f);
+
 
     }
     public void displayAllProfilesSubmit(boolean first){
@@ -232,6 +355,18 @@ public class GUI{
         });
         p.add(submitForm);
     }
+    public static void upSubmit(GUI g, JFrame f, JPanel p){
+        JButton submitForm = new JButton("Find");
+        submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
+        submitForm.setHorizontalAlignment(JLabel.CENTER);
+        submitForm.setVerticalAlignment(JLabel.CENTER);
+        submitForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { g.updateProfileSubmit();
+            }
+        });
+        p.add(submitForm);
+    }
     public static void cpSubmit(GUI g, JFrame f, JPanel p){
         JButton submitForm = new JButton("Submit");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -254,9 +389,9 @@ public class GUI{
                 if(g.mmg.cp.isSelected()){
                     g.createProfile();
                 } else if(g.mmg.rp.isSelected()){
-                    //g.removeProfile();
+                    g.removeProfile();
                 } else if(g.mmg.up.isSelected()){
-                    //g.updateProfile();
+                    g.updateProfile();
                 } else if(g.mmg.dp.isSelected()){
                     g.displayProfile();
                 } else if(g.mmg.dap.isSelected()){
