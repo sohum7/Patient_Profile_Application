@@ -88,6 +88,39 @@ public class DisplayProfileGUI {
         tpattype.setEditable(false);
         tpattype.setFont(new Font(font, Font.PLAIN, fontSize));
         p.add(tpattype);
+
+        
+        JLabel mdcontact = new JLabel("Medical Contact: ");
+        mdcontact.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(mdcontact);
+        JTextField tmdcontact = new JTextField(pat.getMedCondInfo().getmdContact());
+        tmdcontact.setEditable(false);
+        tmdcontact.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(tmdcontact);
+
+        JLabel mdphone = new JLabel("Medical Phone: ");
+        mdphone.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(mdphone);
+        JTextField tmdphone = new JTextField(pat.getMedCondInfo().getmdPhone());
+        tmdphone.setEditable(false);
+        tmdphone.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(tmdphone);
+
+        JLabel algtype = new JLabel("Allergy Type: ");
+        algtype.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(algtype);
+        JTextField talgtype = new JTextField(pat.getMedCondInfo().getAlgType());
+        talgtype.setEditable(false);
+        talgtype.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(talgtype);
+
+        JLabel illtype = new JLabel("Illness Type: ");
+        illtype.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(illtype);
+        JTextField tilltype = new JTextField(pat.getMedCondInfo().getIllType());
+        tilltype.setEditable(false);
+        tilltype.setFont(new Font(font, Font.PLAIN, fontSize));
+        p.add(tilltype);
     }
     public static void setDefaultLayout(JFrame cp, JPanel p){
         // Set default parameters

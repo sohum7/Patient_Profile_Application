@@ -25,7 +25,7 @@ public class RemoveProfileGUI {
     }
     public static void setDefaultLayout(JFrame up, JPanel p){
         // Set default parameters
-        up.setTitle("Update Profile");
+        up.setTitle("Remove Profile");
         p.setBorder(new EmptyBorder(15, 15, 15, 15));
 
         GridLayout layout = new GridLayout(0, 2, 2, 2);

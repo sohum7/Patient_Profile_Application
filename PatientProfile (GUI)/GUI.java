@@ -9,7 +9,7 @@ public class GUI{
     JFrame f;
     JPanel p;
     MainMenuGUI mmg;
-    CreateProfileGUI cpg       = new CreateProfileGUI();
+    CreateProfileGUI cpg;
     RemoveProfileGUI rpg;
     UpdateProfileGUI upg;
     DisplayProfileGUI dpg;
@@ -145,7 +145,8 @@ public class GUI{
                 //System.out.println(g.rpg.lname.getText());
                 if(g.db.deleteProfile(g.rpg.tadminid.getText(), g.rpg.tlname.getText())){
                     JOptionPane.showMessageDialog(new JFrame(), "Successfully removed profile");
-
+                    try { g.db.writeAllPatientProf(); }
+                    catch (IOException e2) { JOptionPane.showMessageDialog(new JFrame(), "Database error"); }
                     g.mainMenu();
                 }
                 else{
@@ -194,7 +195,8 @@ public class GUI{
                     if(UpdateProfileGUI.actuallyUpdate(pat, toChange, (String)g.upg.changebox.getSelectedItem())){
                         // Success - Display some success dialog box
                         JOptionPane.showMessageDialog(new JFrame(), "Successfully updated profile");
-
+                        try { g.db.writeAllPatientProf(); }
+                        catch (IOException e2) { JOptionPane.showMessageDialog(new JFrame(), "Database error"); }
                         g.mainMenu();
                     }
                     else{
