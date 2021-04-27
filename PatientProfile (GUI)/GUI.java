@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
+//// GUI ////
+// Main module for the Integreated Patient System to run with an added GUI
 public class GUI{
+    // Main attributes
     PatientProfDB db;
     JFrame f;
     JPanel p;
@@ -14,17 +17,8 @@ public class GUI{
     UpdateProfileGUI upg;
     DisplayProfileGUI dpg;
     DisplayAllProfilesGUI dapg;
-    static states STATE = null;
-    static enum states { MM, CP, RP, UP, DP, DAP,
-        CP_DATA, CP_SUMBIT_SUCCESS, CP_SUBMIT_ERROR,
-        RP_DATA, RP_SUMBIT_SUCCESS, RP_SUBMIT_ERROR,
-        UP_DATA, UP_DISPLAY_PROF, UP_SUBMIT_ERROR,
-        DP_DATA, DP_DISPLAY_PROF, DP_SUBMIT_ERROR,
-        DAP_DATA, DP_DISPLAY_ALL_PROFS, DAP_SUBMIT_ERROR };
 
-    static states getState(){ return STATE; }
-    static void setState(states s){ STATE = s; }
-
+    // GUI constructor
     public GUI() throws ClassNotFoundException, IOException{
         this.db = new PatientProfDB("testFile2.txt");
         this.p = new JPanel();
@@ -39,6 +33,7 @@ public class GUI{
         this.dapg = new DisplayAllProfilesGUI();
     }
 
+    // Displays the 'main menu'
     public void mainMenu(){
         this.f.remove(this.p);
         this.p = new JPanel();
@@ -51,6 +46,7 @@ public class GUI{
 
         setFrame(this.f);
     }
+    // Displays the 'create profile' form
     public void createProfile(){
         this.f.remove(this.p);
         this.p = new JPanel();
@@ -64,6 +60,7 @@ public class GUI{
 
         setFrame(this.f);
     }
+    // 'create profile' post submit click
     public void createProfileSubmit(PatientProf pat){
         if(this.db.insertNewProfile(pat)){
             // Success - Display some success dialog box
@@ -76,6 +73,7 @@ public class GUI{
             JOptionPane.showMessageDialog(new JFrame(), "Unable to create profile");
         }
     }
+    // 'display's porfile' form - only 1 profile
     public void displayProfile(){
         this.f.remove(this.p);
         this.p = new JPanel();
@@ -91,7 +89,7 @@ public class GUI{
 
         setFrame(this.f);
     }
-
+    // 'display's porfile' post submit click
     public void displayProfileSubmit(){
         PatientProf pat = null;
 
@@ -112,11 +110,11 @@ public class GUI{
 
             setFrame(this.f);
         } else {
-            // Error - Display some error dialog box
+            // Error
             displayProfileError(0);
-            //backToMain(this, this.f, this.p);
         }
     }
+    // 'removes profile' form
     public void removeProfile(){
         this.f.remove(this.p);
         this.p = new JPanel();
@@ -132,7 +130,7 @@ public class GUI{
 
         setFrame(this.f);
     }
-
+    // 'removes profile' post submit click
     public void rpProfileSubmit(GUI g, JFrame f, JPanel p){
         JButton submitForm = new JButton("Submit");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -141,8 +139,6 @@ public class GUI{
         submitForm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println(g.rpg.adminid.getText());
-                //System.out.println(g.rpg.lname.getText());
                 if(g.db.deleteProfile(g.rpg.tadminid.getText(), g.rpg.tlname.getText())){
                     JOptionPane.showMessageDialog(new JFrame(), "Successfully removed profile");
                     try { g.db.writeAllPatientProf(); }
@@ -151,22 +147,20 @@ public class GUI{
                 }
                 else{
                     JOptionPane.showMessageDialog(new JFrame(), "ERROR: Could not remove profile");
-
                     g.mainMenu();
                 }
             }
         });
         p.add(submitForm);
     }
+    // 'update profiles' first form
     public void updateProfileSubmit(){
         PatientProf pat = null;
 
         try{ pat = this.db.findProfile(this.upg.tadminid.getText(), this.upg.tlname.getText());
-        } catch(Exception e2){
+        } catch(Exception e2){ }
 
-        }
         if(pat != null){
-            //System.out.println("What?");
             this.f.remove(this.p);
             this.p = new JPanel();
 
@@ -177,12 +171,12 @@ public class GUI{
             this.f.setContentPane(this.p);
             this.f.setSize(300, 400);
             this.f.setVisible(true);
-
         }
         else{
             displayProfileError(0);
         }
     }
+    // 'update profiles' second form
     public void updateFieldSubmit(GUI g, JFrame f, JPanel p, PatientProf pat, String toChange, UpdateProfileGUI u){
         JButton submitForm = new JButton("Update");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -208,7 +202,6 @@ public class GUI{
                     if(g.upg.actuallyUpdate(pat, toChange, g.upg.tfield.getText())){
                         // Success - Display some success dialog box
                         JOptionPane.showMessageDialog(new JFrame(), "Successfully updated profile");
-
                         g.mainMenu();
                     }
                     else {
@@ -219,9 +212,8 @@ public class GUI{
             }
         });
         p.add(submitForm);
-
-
     }
+    // 'display all profiles' form
     public void displayAllProfiles(){
         // obtain user info
         // add submit button
@@ -239,6 +231,7 @@ public class GUI{
         setFrame(this.f);
 
     }
+    // 'update profiles' post submit click
     public void updateProfile(){
         this.f.remove(this.p);
         this.p = new JPanel();
@@ -252,9 +245,8 @@ public class GUI{
         this.f.setSize(300, 400);
         this.f.setVisible(true);
         setFrame(this.f);
-
-
     }
+    // 'display all profiles' post submit click
     public void displayAllProfilesSubmit(boolean first){
         // if profile exists for the adminID
         //      display first profile
@@ -288,39 +280,20 @@ public class GUI{
             }
         }
     }
-    /*
-    public void displayAllProfilesNext(){
-        //  if another profiles exists
-        //      display it
-        //      add next button
-        //  else
-        //      let user know there are no more profiles
-        this.f.remove(this.p);
-        this.p = new JPanel();
-        DisplayProfileGUI.setDefaultLayout(this.f, this.p);
-
-        PatientProf pat = null;
-        
-        // db next profile function goes here
-
-        this.f.setContentPane(this.p);
-        this.f.setSize(300, 400);
-        this.f.setVisible(true);
-        setFrame(this.f);
-
-    }
-    */
+    // If there is a 'display profile' or 'display all profiles' ERROR display error message
     public static void displayProfileError(int type){
         String toPrint = "Error";
         if(type == 0){ toPrint = "Unable to locate Patient Profile"; }
         else if(type == 1) { toPrint = "No more profiles for current Admin user"; }
         JOptionPane.showMessageDialog(new JFrame(), toPrint);
     }
+    // Removes all contents of the specified JFrame
     public static void setFrame(JFrame f){
         //f.removeAll();
         f.revalidate();
         f.repaint();
     }
+    // Button to return to back to the 'main menu'
     public static void backToMain(GUI g, JFrame f, JPanel p){
         JButton backForm = new JButton("Back/Cancel");
         backForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -332,6 +305,7 @@ public class GUI{
         });
         p.add(backForm);
     }
+    // Button to display the next profile in 'display all profiles'
     public static void dpNext(GUI g, JFrame f, JPanel p){
         JButton nextForm = new JButton("Next");
         nextForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -342,9 +316,8 @@ public class GUI{
             public void actionPerformed(ActionEvent e) { g.displayAllProfilesSubmit(false); }
         });
         p.add(nextForm);
-
     }
-
+    // Button to display the contents of 'display profile' and 'display all profiles'
     public static void dpSubmit(GUI g, JFrame f, JPanel p, int funcCallType){
         JButton submitForm = new JButton("Submit");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -357,6 +330,7 @@ public class GUI{
         });
         p.add(submitForm);
     }
+    // Button to display second 'update profiles' form
     public static void upSubmit(GUI g, JFrame f, JPanel p){
         JButton submitForm = new JButton("Find");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -369,6 +343,7 @@ public class GUI{
         });
         p.add(submitForm);
     }
+    // Button to display 'create profile' form
     public static void cpSubmit(GUI g, JFrame f, JPanel p){
         JButton submitForm = new JButton("Submit");
         submitForm.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -380,6 +355,12 @@ public class GUI{
         });
         p.add(submitForm);
     }
+    // Button to choose main funcationality of program
+    //      Create Profile
+    //      Remove Profile
+    //      Update Profile
+    //      Display Profiles
+    //      Display All Profiles
     public static void select(GUI g, JFrame f, JPanel p){
         JButton select = new JButton("Select");
         select.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -399,24 +380,22 @@ public class GUI{
                 } else if(g.mmg.dap.isSelected()){
                     g.displayAllProfiles();
                 }
-                
             }
         });
         p.add(select);
     }
-
-    public void actionPerformed(ActionEvent e){ /* Action to be performed once event has occurred */ }
     
+    // Main function for the GUI
+    // Instantiates the GUI class and begins the session
+    //      beginning at the Main Menu
+    // Error otherwise
     public static void main(String[] args){
-
-        STATE = states.MM;
-
         try{
             GUI ips = new GUI();
             ips.mainMenu();
 
         }catch(Exception e){
-
+            System.out.println("Error.\nPlease check your settings, files, and file structure and try again.");
         }
     }
 }

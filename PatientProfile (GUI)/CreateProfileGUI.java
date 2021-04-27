@@ -3,7 +3,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+// Create Profile GUI module
+//      Provides a GUI to the 'create profile' funcationality in the GUI module
 public class CreateProfileGUI {
+
+    // Basic attributes
     JLabel adminid,fname,lname,addr,phone,copay,insutype,pattype;
     JLabel mdcontact,mdphone,algtype,illtype;
 
@@ -14,6 +18,7 @@ public class CreateProfileGUI {
 
     JButton backForm, submitForm;
 
+    // Styling attributes
     final int fontSize = 16;
     final String font = "Arial";
     int deltaY = 20;
@@ -25,27 +30,10 @@ public class CreateProfileGUI {
     int tyWidth = 20;
     int colSpace = 120;
 
-    public CreateProfileGUI(){
-        // ...
-    }
-
-    /*
-    @Override
-    public boolean equals(Object o){
-        // self check
-        if (this == o){ return true; }
-        // null check
-        if (o == null){ return false; }
-        // type check and cast
-        if (this.getClass() != o.getClass()){ return false; }
-
-        CreateProfileGUI o2 = (CreateProfileGUI) o;
-        JComboBox<String> tpattype;
-        JComboBox<String> talgtype,tilltype;
-        
-        return this.tadminid==o2.tadminid && this.tfname==o2.tfname && this.tlname==o2.tlname && this.taddr==o2.taddr && this.tphone==o2.tphone && this.tcopay==o2.tcopay && this.tmdcontact==o2.tmdcontact && this.tmdphone==o2.tmdphone && this.tinsutype.getSelectedItem().toString()==o2.getSelectedItem().toString();
-    }
-    */
+    // Constructor
+    // Left empty
+    public CreateProfileGUI(){ }
+    // 'create profile' Patient Profile form GUI
     public void createPatientProf(JPanel cp){
 
         this.adminid = new JLabel("Admin ID: ");
@@ -96,7 +84,6 @@ public class CreateProfileGUI {
         this.tinsutype = new JComboBox(PatientProf.getInsuTypes());
         this.tinsutype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tinsutype.setSelectedIndex(0);
-        //tinsutype.addActionListener(this);
         cp.add(this.tinsutype);
 
         this.pattype = new JLabel("Patient Type: ");
@@ -105,10 +92,10 @@ public class CreateProfileGUI {
         this.tpattype = new JComboBox(PatientProf.getPatTypes());
         this.tpattype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tpattype.setSelectedIndex(0);
-        //this.tpattype.addActionListener(this);
         cp.add(this.tpattype);
 
     }
+    // 'create profile' Medical Conditions form GUI
     public void createMedCond(JPanel cp){
 
         this.mdcontact = new JLabel("Medical Contact: ");
@@ -131,7 +118,6 @@ public class CreateProfileGUI {
         this.talgtype = new JComboBox(MedCond.getAlgTypes());
         this.talgtype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.talgtype.setSelectedIndex(0);
-        //this.talgtype.addActionListener(this);
         cp.add(this.talgtype);
 
         this.illtype = new JLabel("Illness Type: ");
@@ -140,24 +126,13 @@ public class CreateProfileGUI {
         this.tilltype = new JComboBox(MedCond.getIllTypes());
         this.tilltype.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tilltype.setSelectedIndex(0);
-        //this.tilltype.addActionListener(this);
         cp.add(this.tilltype);
-        
     }
-
-    
+    // Set the default form layout for 'create profile'
     public void setDefaultLayout(JFrame cp, JPanel p){
         // Set default parameters
         cp.setTitle("Create Profile");
         p.setBorder(new EmptyBorder(15, 15, 15, 15));
-
-        /*
-        JLabel title = new JLabel("asdf");
-        title.setFont(new Font("Arial", Font.PLAIN, 15));
-        title.setHorizontalAlignment(JLabel.CENTER);
-        title.setVerticalAlignment(JLabel.CENTER);
-        cp.add(title);
-        */
 
         GridLayout layout = new GridLayout(0, 2, 2, 2);
         p.setLayout(layout);
@@ -165,13 +140,10 @@ public class CreateProfileGUI {
         createPatientProf(p);
         createMedCond(p);
     }
+    // Returns an instance of the PatientProf module
     public PatientProf createPatientProfile(){
         return new PatientProf(this.tadminid.getText(), this.tfname.getText(), this.tlname.getText(), this.taddr.getText(),
         this.tphone.getText(), Float.parseFloat(this.tcopay.getText()), (String) this.tinsutype.getSelectedItem(), (String) this.tpattype.getSelectedItem(),
         new MedCond(this.tmdcontact.getText(), this.tmdphone.getText(), (String) this.talgtype.getSelectedItem(), (String) this.tilltype.getSelectedItem()) );
-    }
-    public void clearFields(){
-        // Clear any parameters
-
     }
 }

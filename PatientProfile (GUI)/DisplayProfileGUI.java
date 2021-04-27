@@ -3,12 +3,17 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+// Display Profile GUI module
+//      Provides a GUI to the 'Display Profile' functionality in the GUI module
 public class DisplayProfileGUI {
+    // Basic attributes
     final int fontSize = 16;
     final String font = "Arial";
     JLabel adminid, lname;
     JTextField tadminid, tlname;
 
+    // 'Display Profile' form
+    // obtains the adminID and last name of the profile
     public void getAccountInfo(JPanel p){
         this.adminid = new JLabel("Admin ID: ");
         this.adminid.setFont(new Font(font, Font.PLAIN, fontSize));
@@ -24,6 +29,7 @@ public class DisplayProfileGUI {
         this.tlname.setFont(new Font(font, Font.PLAIN, fontSize));
         p.add(this.tlname);
     }
+    // 'display profile''s form GUI
     public void displayProfile(JPanel p, PatientProf pat){
         JLabel adminid = new JLabel("Admin ID: ");
         adminid.setFont(new Font(font, Font.PLAIN, fontSize));
@@ -122,18 +128,11 @@ public class DisplayProfileGUI {
         tilltype.setFont(new Font(font, Font.PLAIN, fontSize));
         p.add(tilltype);
     }
+    // 'display profile''s form GUI with a predefined layout
     public static void setDefaultLayout(JFrame cp, JPanel p){
         // Set default parameters
         cp.setTitle("Display Profile");
         p.setBorder(new EmptyBorder(15, 15, 15, 15));
-
-        /*
-        JLabel title = new JLabel("asdf");
-        title.setFont(new Font("Arial", Font.PLAIN, 15));
-        title.setHorizontalAlignment(JLabel.CENTER);
-        title.setVerticalAlignment(JLabel.CENTER);
-        cp.add(title);
-        */
 
         GridLayout layout = new GridLayout(0, 2, 2, 2);
         p.setLayout(layout);

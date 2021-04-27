@@ -3,7 +3,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+// Update Profile GUI module
+//      Provides a GUI to the 'Update Profile' functionality in the GUI module
 public class UpdateProfileGUI {
+    // Basic attributes
     final int fontSize = 16;
     final String font = "Arial";
     JLabel adminid, lname, field, newinfo;
@@ -11,6 +14,8 @@ public class UpdateProfileGUI {
     JComboBox<String> fieldb;
     JComboBox<String> changebox;
     String[] fields = {"First Name", "Last Name", "Address", "Phone Number", "Copay", "Insurance Type", "Patient Type", "MD contact", "MD phone", "Allergy Type","Illness Type"};
+    
+    // Sets the layout for the 'Update profile' GUI
     public static void setDefaultLayout(JFrame up, JPanel p){
         // Set default parameters
         up.setTitle("Update Profile");
@@ -19,7 +24,7 @@ public class UpdateProfileGUI {
         GridLayout layout = new GridLayout(0, 2, 2, 2);
         p.setLayout(layout);
     }
-
+    // Obtain profile information such as adminID and last name
     public void whichProfile(JPanel p){
         this.adminid = new JLabel("Admin ID: ");
         this.adminid.setFont(new Font(font, Font.PLAIN, fontSize));
@@ -43,7 +48,7 @@ public class UpdateProfileGUI {
         this.fieldb.setSelectedIndex(0);
         p.add(this.fieldb);
     }
-
+    // 'Update Profile' second form GUI
     public void updateProfile(JPanel p, PatientProf pat, String toChange, String admn, String lnm){
         this.adminid = new JLabel("Admin ID: ");
         this.adminid.setFont(new Font(font, Font.PLAIN, fontSize));
@@ -60,7 +65,6 @@ public class UpdateProfileGUI {
         this.tlname.setFont(new Font(font, Font.PLAIN, fontSize));
         this.tlname.setEditable(false);
         p.add(this.tlname);
-
 
         this.field = new JLabel("New "+ toChange +": ");
         this.field.setFont(new Font(font, Font.PLAIN, fontSize));
@@ -89,7 +93,7 @@ public class UpdateProfileGUI {
             p.add(this.tfield);
         }
     }
-
+    // 'Updates Profile' within database
     public static boolean actuallyUpdate(PatientProf pat, String field, String newinfo){
         if(field.equals("First Name")){
             pat.updateFirstName(newinfo);

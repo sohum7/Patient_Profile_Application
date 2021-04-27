@@ -4,14 +4,17 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+// Main Menu GUI module
+//      Provides a GUI to the 'Main Menu' funcationality in the GUI module
 public class MainMenuGUI {
+    // Main attributes
     JRadioButton cp, rp, up, dp, dap;
     ButtonGroup bg;
 
-    public MainMenuGUI(){
-
-    }
+    // Constructor
+    public MainMenuGUI(){ }
     
+    // Main menu's GUI
     public void intPatSysMenu(JPanel p){
         JLabel ltitle = new JLabel("Integrated Patient System");
         ltitle.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -30,6 +33,7 @@ public class MainMenuGUI {
         p.add(ltitle);
         p.add(cp); p.add(rp); p.add(up); p.add(dp); p.add(dap);
     }
+    // Main menu's GUI with a predefined layout
     public void setDefaultLayout(JFrame mm, JPanel p){
         // Set default parameters
         mm.setTitle("Integrated Patient Systems");
@@ -38,27 +42,5 @@ public class MainMenuGUI {
         p.setLayout(layout);
 
         intPatSysMenu(p);
-    }
-    public void actionPerformed(ActionEvent e){
-        // Action to be performed once event has occurred
-        /*
-        if(e.getSource() == this.select){
-            if(this.cp.isSelected()){
-                GUI.setState(GUI.states.CP_CLEARED);
-            }
-            if(this.rp.isSelected()){
-                GUI.setState(GUI.states.RP_CLEARED);
-            }
-            if(this.up.isSelected()){
-                GUI.setState(GUI.states.UP_CLEARED);
-            }
-            if(this.dp.isSelected()){
-                GUI.setState(GUI.states.DP_CLEARED);
-            }
-            if(this.dap.isSelected()){
-                GUI.setState(GUI.states.DAP_CLEARED);
-            }
-        }
-        */
     }
 }
